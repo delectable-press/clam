@@ -4,5 +4,5 @@
  * This file is required in the root directory so WordPress can find it.
  * WP is hardcoded to look in its own directory or one directory up for wp-config.php.
  */
-require_once(dirname(__DIR__) . '/app/config/config.php');
+require_once(dirname(__DIR__) . '/html/config/config.php');
 require_once(ABSPATH . 'wp-settings.php');
