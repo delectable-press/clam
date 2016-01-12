@@ -1,2 +1,4 @@
 wordpress:
   build: images/wordpress
+php-apache:
+  build: images/apache
