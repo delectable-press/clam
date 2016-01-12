@@ -1,6 +1,6 @@
 <?php
 $root_dir = dirname(__DIR__);
-$webroot_dir = $root_dir . '/web';
+$webroot_dir = $root_dir;
 
 /**
  * Set up our global environment constant and load its config first
