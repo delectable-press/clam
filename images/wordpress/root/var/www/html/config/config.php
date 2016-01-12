@@ -7,7 +7,7 @@ $webroot_dir = $root_dir;
  * Default: development
  */
 define('WP_ENV', getenv('WP_ENV') ?: 'development');
-$env_config = __DIR__ . '/environments/' . WP_ENV . '.php';
+$env_config = __DIR__ . '/app/environments/' . WP_ENV . '.php';
 if (file_exists($env_config)) {
     require_once $env_config;
 }

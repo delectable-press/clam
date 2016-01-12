@@ -6,3 +6,19 @@ php-apache:
     - wordpress
   ports:
     - "80:80"
+  environment:
+    DB_NAME: "wordpress"
+    DB_USER: "admin"
+    DB_PASSWORD: "admin"
+    DB_HOST: "1234"
+    WP_ENV: "development"
+    WP_HOME: "http://192.168.99.100"
+    WP_SITE_URL: "http://192.168.99.100"
+    AUTH_KEY: ""
+    SECURE_AUTH_KEY: ""
+    LOGGED_IN_KEY: ""
+    NONCE_KEY: ""
+    AUTH_SALT: ""
+    SECURE_AUTH_SALT: ""
+    LOGGED_IN_SALT: ""
+    NONCE_SALT: ""
