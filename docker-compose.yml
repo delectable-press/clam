@@ -2,3 +2,7 @@ wordpress:
   build: images/wordpress
 php-apache:
   build: images/apache
+  volumes_from:
+    - wordpress
+  ports:
+    - "80:80"
