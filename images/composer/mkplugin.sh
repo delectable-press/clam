@@ -31,22 +31,25 @@ cat > /plugin/composer.json <<EOF
 EOF
 
 cd /plugin
+
 composer install
 
-composer show -i $type/$plugin | grep versions
+version=$(composer show -i $type/$plugin | grep versions)
+version="${version#*:}"
+version="${version#*\* }"
 cd /
 
 case "$type" in
   "wpackagist-plugin")
-    base="clam/plugin"
+    base="ubuntu:14.04"
     path="/var/www/html/app/plugins"
   ;;
   "wpackagist-muplugin")
-    base="clam/mu-plugin"
+    base="ubuntu:14.04"
     path="/var/www/html/app/mu-plugins"
   ;;
   "wpackagist-theme")
-    base="clam/theme"
+    base="ubuntu:14.04"
     path="/var/www/html/app/themes"
   ;;
 esac
@@ -57,5 +60,6 @@ COPY ./$plugin $path
 VOLUME $path/$plugin
 EOF
 
-docker build -t clam/$plugin:latest /plugin/$plugin
-echo "Generated image: clam/$plugin"
+docker build -t clamp/$plugin:latest -t clamp/$plugin:$version /plugin/$plugin
+docker push clamp/$plugin
+echo "Generated image: clamp/$plugin:$version"
