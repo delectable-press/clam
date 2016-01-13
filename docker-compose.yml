@@ -9,7 +9,7 @@ php-apache:
   environment:
     DB_NAME: "wordpress"
     DB_USER: "admin"
-    DB_PASSWORD: "admin"
+    DB_PASSWORD: "password"
     DB_HOST: "1234"
     WP_ENV: "development"
     WP_HOME: "http://192.168.99.100"
@@ -22,3 +22,24 @@ php-apache:
     SECURE_AUTH_SALT: ""
     LOGGED_IN_SALT: ""
     NONCE_SALT: ""
+db-data:
+  image: ubuntu:14.04
+  volumes:
+    - /var/lib/mysql
+db:
+  build: images/mysql
+  volumes_from:
+    - db-data
+  environment:
+    ON_CREATE_DB: "wordpress"
+    REPLICATION_MASTER: "true"
+    REPLICATION_PASS: "replica"
+    MYSQL_PASS: "password"
+read-db:
+  build: images/mysql
+  environment:
+    REPLICATION_SLAVE: "true"
+    REPLICATION_PASS: "replica"
+    MYSQL_PASS: "password"
+  links:
+    - "db:mysql"
