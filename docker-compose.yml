@@ -1,5 +1,7 @@
 wordpress:
   build: images/wordpress
+  volumes_from:
+    - akismet
 php-apache:
   build: images/apache
   volumes_from:
@@ -22,7 +24,7 @@ php-apache:
     SECURE_AUTH_SALT: ""
     LOGGED_IN_SALT: ""
     NONCE_SALT: ""
-db-data:
+db:
   image: ubuntu:14.04
   volumes:
     - /var/lib/mysql
@@ -43,3 +45,5 @@ read-db:
     MYSQL_PASS: "password"
   links:
     - "db:mysql"
+akismet:
+  image: clamp/akismet
