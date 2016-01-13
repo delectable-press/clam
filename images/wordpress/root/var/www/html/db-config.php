@@ -87,18 +87,18 @@ $wpdb->check_tcp_responsiveness = true;
  */
 
 $master = getenv('DB_1_PORT_3306_TCP_ADDR');
-$slave = getenv('DB_2_PORT_3306_TCP_ADDR');
+$slave = getenv('DB_SLAVE_1_PORT_3306_TCP_ADDR');
 
 $wpdb->add_database([
 	'host' => $master,
 	'user' => 'admin',
 	'password' => getenv('DB_PASSWORD'),
 	'name' => 'wordpress',
-	'read' => 0,
+	'read' => 2,
 	'write' => 1
 ]);
 
-$slaveNumber = 2;
+$slaveNumber = 1;
 
 while (!empty($slave)) {
 	$wpdb->add_database([

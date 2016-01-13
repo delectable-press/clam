@@ -8,6 +8,9 @@ php-apache:
     - wordpress
   ports:
     - "80:80"
+  links:
+    - "db:db"
+    - "db_slave:db_slave"
   environment:
     DB_NAME: "wordpress"
     DB_USER: "admin"
@@ -24,7 +27,7 @@ php-apache:
     SECURE_AUTH_SALT: ""
     LOGGED_IN_SALT: ""
     NONCE_SALT: ""
-db:
+db-data:
   image: ubuntu:14.04
   volumes:
     - /var/lib/mysql
@@ -37,13 +40,18 @@ db:
     REPLICATION_MASTER: "true"
     REPLICATION_PASS: "replica"
     MYSQL_PASS: "password"
-read-db:
+  ports:
+    - "3306:3306"
+db_slave:
   build: images/mysql
   environment:
+    ON_CREATE_DB: "wordpress"
     REPLICATION_SLAVE: "true"
     REPLICATION_PASS: "replica"
     MYSQL_PASS: "password"
   links:
     - "db:mysql"
+  ports:
+    - "3307:3307"
 akismet:
-  image: clamp/akismet
+  image: clamp/plugin-captcha:latest
