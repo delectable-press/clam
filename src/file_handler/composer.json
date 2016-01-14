@@ -1,0 +1,16 @@
+{
+  "name": "clam-p/file_handler",
+  "description": "Overrides PHP file functions to use azure storage",
+  "repositories": [
+    {
+      "type": "pear",
+      "url": "http://pear.php.net"
+    }
+  ],
+  "require": {
+    "pear-pear.php.net/mail_mime" : "^1.10.0",
+    "pear-pear.php.net/http_request2" : "^2.2.1",
+    "pear-pear.php.net/mail_mimedecode" : "^1.5.5",
+    "microsoft/windowsazure": "^v0.4.0"
+  }
+}
