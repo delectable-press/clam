@@ -1,7 +1,9 @@
 wordpress:
   build: images/wordpress
   volumes_from:
-    - akismet
+    - uploads
+    # Add plugins below
+    # End plugins
 php-apache:
   build: images/apache
   volumes_from:
@@ -30,7 +32,7 @@ php-apache:
 db-data:
   image: ubuntu:14.04
   volumes:
-    - /var/lib/mysql
+    - ./mysql:/var/lib/mysql
 db:
   build: images/mysql
   volumes_from:
@@ -53,5 +55,7 @@ db_slave:
     - "db:mysql"
   ports:
     - "3307:3307"
-akismet:
-  image: clamp/plugin-captcha:latest
+uploads:
+  image: ubuntu:14.04
+  volumes:
+    - ./data:/var/www/html/app/uploads

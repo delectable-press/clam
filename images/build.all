@@ -3,7 +3,7 @@
 buildnpush () {
   version=$2
   image=$1
-  docker build -t clamp/run-$image:latest $image
+  docker build --pull -t clamp/run-$image:latest $image
   if [ "$?" != "0" ]
   then
     echo "Build failed, stopping"
@@ -14,7 +14,7 @@ buildnpush () {
   docker push clamp/run-$image
 }
 
-currentversion=0.1
+currentversion=$VERSION
 
 buildnpush apache $currentversion
 buildnpush composer $currentversion
@@ -22,3 +22,6 @@ buildnpush mysql $currentversion
 buildnpush plugin $currentversion
 buildnpush smb $currentversion
 buildnpush wordpress $currentversion
+
+docker tag clamp/builder:latest clamp/builder:$currentversion
+docker push clamp/builder

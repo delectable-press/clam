@@ -1,5 +1,9 @@
 # This container composes plugins in docker
 
+# Introduction
+
+This container builds data volumes with a given plugin/mu-plugin/theme and pushes it
+
 ## It's terrifying...
 
 Invoking the terrifying shit:
