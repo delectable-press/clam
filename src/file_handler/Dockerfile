@@ -1,10 +1,4 @@
 # Builds the file_handler
-FROM clamp/composer:latest
-
-ENTRYPOINT composer
-
-COPY . /clam-lib/file_handler
-
-WORKDIR /clam-lib/file_handler
-
-RUN composer install
+FROM ubuntu:14.04
+RUN apt-get update \
+    && apt-get install -y cifs-utils
