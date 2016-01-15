@@ -7,6 +7,7 @@ php-apache:
   links:
     - "db:db"
     - "db_slave:db_slave"
+    - "memcached:memcached_cluster"
   environment:
     DB_NAME: "wordpress"
     DB_USER: "admin"
@@ -23,6 +24,8 @@ php-apache:
     SECURE_AUTH_SALT: ""
     LOGGED_IN_SALT: ""
     NONCE_SALT: ""
+memcached:
+  image: clamp/run-memcached:latest
 db-data:
   image: ubuntu:14.04
 db:

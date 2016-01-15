@@ -81,6 +81,7 @@ then
   buildnpush plugin $currentversion &
   buildnpush smb $currentversion &
   buildnpush wordpress $currentversion &
+  buildnpush memcached $currentversion &
   wait
 fi
 
@@ -99,7 +100,5 @@ then
   pluginBuild google-analytics-for-wordpress &
   pluginBuild jetpack &
   pluginBuild sendgrid-email-delivery-simplified &
-  pluginBuild rest-api &
-  pluginBuild wordpress-seo &
   wait
 fi
