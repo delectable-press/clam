@@ -4,6 +4,12 @@ buildnpush () {
   version=$2
   image=$1
   docker build -t clamp/run-$image:latest $image
+  if [ "$?" != "0" ]
+  then
+    echo "Build failed, stopping"
+    exit 1
+  fi
+
   docker tag clamp/run-$image:latest clamp/run-$image:$version
   docker push clamp/run-$image
 }
