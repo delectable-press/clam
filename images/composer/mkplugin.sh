@@ -84,9 +84,12 @@ writeDockerfile $plugin $base $path
 build() {
 
 fullname="$2-$1"
-docker build -t clamp/$fullname:latest /plugin/$1
+docker build --pull -t clamp/$fullname:latest /plugin/$1
 docker tag -f clamp/$fullname:latest clamp/$fullname:$version
-docker push clamp/$fullname
+if [ "$PUSH" == "true" ]
+then
+  docker push clamp/$fullname
+fi
 }
 build $plugin $prefix $version
 

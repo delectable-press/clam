@@ -27,4 +27,6 @@ COPY mkplugin.sh /mkplugin.sh
 
 RUN chmod +x /mkplugin.sh
 
+ONBUILD RUN /mkplugin $PLUGIN
+
 ENTRYPOINT [ "/mkplugin.sh" ]

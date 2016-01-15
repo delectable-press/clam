@@ -1,11 +1,13 @@
 wordpress:
-  build: images/wordpress
+  image: clamp/run-wordpress:latest
+  volumes:
+    - ./images/wordpress/root/var/www/html:/var/www/html
   volumes_from:
     - uploads
     # Add plugins below
     # End plugins
 php-apache:
-  build: images/apache
+  image: clamp/run-apache:latest
   volumes_from:
     - wordpress
   ports:
@@ -34,7 +36,7 @@ db-data:
   volumes:
     - ./mysql:/var/lib/mysql
 db:
-  build: images/mysql
+  image: clamp/run-mysql:latest
   volumes_from:
     - db-data
   environment:
@@ -45,7 +47,7 @@ db:
   ports:
     - "3306:3306"
 db_slave:
-  build: images/mysql
+  image: clamp/run-mysql:latest
   environment:
     ON_CREATE_DB: "wordpress"
     REPLICATION_SLAVE: "true"
@@ -59,3 +61,21 @@ uploads:
   image: ubuntu:14.04
   volumes:
     - ./data:/var/www/html/app/uploads
+akismet:
+  image: clamp/plugin-akismet:latest
+application-insights:
+  image: clamp/plugin-application-insights:latest
+crayon-syntax-highlighter:
+  image: clamp/plugin-crayon-syntax-highlighter:latest
+disable-responsive-images:
+  image: clamp/plugin-disable-responsive-images:latest
+google-analytics-for-wordpress:
+  image: clamp/plugin-google-analytics-for-wordpress:latest
+jetpack:
+  image: clamp/plugin-jetpack:latest
+sendgrid-email-delivery-simplified:
+  image: clamp/plugin-sendgrid-email-delivery-simplified
+rest-api:
+  image: clamp/plugin-rest-api:latest
+wordpress-seo:
+  image: clamp/wordpress-seo:latest
