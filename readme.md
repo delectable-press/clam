@@ -46,6 +46,8 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock -v /c/Users/withi/.docke
 docker-compose up
 ```
 
+If your just interested in running it, then a simple `docker-compose up` will do.
+
 # License
 
 While this is available to be read for free, I retain all copywrite. It's like a book in the library, you can borrow it,
