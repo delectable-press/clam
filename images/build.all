@@ -60,7 +60,7 @@ pluginBuild() {
     clamp/run-composer wpackagist-plugin/$plugin
   if [ "$PUSH" == "true" ]
   then
-    docker push clam/plugin-$plugin
+    docker push clamp/plugin-$plugin
   fi
 }
 
