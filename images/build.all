@@ -60,6 +60,7 @@ pluginBuild() {
     clamp/run-composer wpackagist-plugin/$plugin
   if [ "$PUSH" == "true" ]
   then
+    sleep 1
     docker push clamp/plugin-$plugin
   fi
 }
@@ -67,19 +68,20 @@ pluginBuild() {
 if [ "$CLEANUP" == "true" ]
 then
   echo "Cleaning up"
-  docker run -v /var/run/docker.sock:/var/run/docker.sock --rm spotify/docker-gc
+  docker run -e FORCE_IMAGE_REMOVAL=1 -e FORCE_CONTAINER_REMOVAL=1 -v /var/run/docker.sock:/var/run/docker.sock --rm spotify/docker-gc
 fi
 
 currentversion=$VERSION
 
 if [ "$BUILD_RUNS" == "true" ]
 then
-  buildnpush apache $currentversion
-  buildnpush composer $currentversion
-  buildnpush mysql $currentversion
-  buildnpush plugin $currentversion
-  buildnpush smb $currentversion
-  buildnpush wordpress $currentversion
+  buildnpush apache $currentversion &
+  buildnpush composer $currentversion &
+  buildnpush mysql $currentversion &
+  buildnpush plugin $currentversion &
+  buildnpush smb $currentversion &
+  buildnpush wordpress $currentversion &
+  wait
 fi
 
 docker tag -f clamp/builder:latest clamp/builder:$currentversion
@@ -90,14 +92,14 @@ fi
 
 if [ "$BUILD_PLUGINS" == "true" ]
 then
-  pluginBuild akismet
-  pluginBuild application-insights
-  pluginBuild crayon-syntax-highlighter
-  pluginBuild disable-responsive-images
-  pluginBuild google-analytics-for-wordpress
-  pluginBuild jetpack
-  pluginBuild sendgrid-email-delivery-simplified
-  pluginBuild rest-api
-  pluginBuild wordpress-seo
+  pluginBuild akismet &
+  pluginBuild application-insights &
+  pluginBuild crayon-syntax-highlighter &
+  pluginBuild disable-responsive-images &
+  pluginBuild google-analytics-for-wordpress &
+  pluginBuild jetpack &
+  pluginBuild sendgrid-email-delivery-simplified &
+  pluginBuild rest-api &
+  pluginBuild wordpress-seo &
   wait
 fi
