@@ -17,4 +17,4 @@ LABEL version="0.1" description="Builds clamp"
 RUN chmod +x /build/build.all
 
 WORKDIR /build
-ENTRYPOINT /build/build.all
+ENTRYPOINT ["/build/build.all"]
