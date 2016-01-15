@@ -202,4 +202,4 @@ Temporary Items
 # Notepad++ backups #
 *.bak
 
-mysql
+/mysql
