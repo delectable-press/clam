@@ -76,7 +76,9 @@ currentversion=$VERSION
 
 if [ "$BUILD_RUNS" == "true" ]
 then
-  buildnpush php-5.6 $currentversion lib
+  buildnpush php-5.6 $currentversion lib &
+  buildnpush php-7 $currentversion lib &
+  wait
   buildnpush apache $currentversion run &
   buildnpush composer $currentversion run &
   buildnpush mysql $currentversion run &
