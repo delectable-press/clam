@@ -35,6 +35,8 @@ If you want to contribute, you have two options:
 
 # Getting started in Windows
 
+This will get you set up for development
+
 1. Get cmdr
 1. Get docker toolbox
 
@@ -57,6 +59,8 @@ docker-compose up
 ```
 
 # Getting started in OSX
+
+This will get you set up for development
 
 1. get docker toolbox
 

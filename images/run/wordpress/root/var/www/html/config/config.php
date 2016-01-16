@@ -23,7 +23,15 @@ define('CONTENT_DIR', '/app');
 define('WP_CONTENT_DIR', $webroot_dir . CONTENT_DIR);
 define('WP_CONTENT_URL', WP_HOME . CONTENT_DIR);
 /**
- * DB settings
+ * Memcached loader
+ */
+$memcached_servers = array();
+while (!empty(getenv("MEMCACHED_" . (count($memcached_servers) + 1) . "_PORT_11211_TCP_ADDR"))) {
+    $server = getenv("MEMCACHED_" . (count($memcached_servers) + 1) . "_PORT_11211_TCP_ADDR");
+    array_push($memcached_servers, array($server, 11211));
+}
+/**
+ * DB settings -- not used (todo: remove them)
  */
 define('DB_NAME', getenv('DB_NAME'));
 define('DB_USER', getenv('DB_USER'));

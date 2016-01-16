@@ -2,6 +2,8 @@
 
 This provides the apache+php5.6 module for clam-p. Nothing too special about it, it includes some stuff for running WordPress.
 
+**This container is currently broke as a billboard**
+
 # Building from source
 
 ``` bash

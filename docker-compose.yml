@@ -57,7 +57,7 @@ uploads:
 wordpress:
   image: clamp/run-wordpress:latest
   volumes:
-    - ./images/wordpress/root/var/www/html:/var/www/html
+    - ./images/run/wordpress/root/var/www/html:/var/www/html
   volumes_from:
     - uploads
     # Add plugins below
