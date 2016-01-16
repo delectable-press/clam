@@ -10,6 +10,7 @@ RUN apt-get update \
     && ln -sf /proc/self/fd/1 /var/log/apache2/error.log
 
 COPY config/php.ini /etc/php5/apache2/php.ini
+COPY config/apache.conf /etc/apache2/apache2.conf
 
 ENV APACHE_LOCK_DIR=/tmp APACHE_PID_FILE=/tmp/apache.pid APACHE_RUN_USER=www-data APACHE_RUN_GROUP=www-data APACHE_LOG_DIR=/var/log/apache2
 
