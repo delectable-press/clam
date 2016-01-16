@@ -41,8 +41,13 @@ buildnpush () {
   docker build --pull -t clamp/$type-$image:latest $type/$image
   if [ "$?" != "0" ]
   then
-    echo "Build failed, stopping"
-    exit 1
+    echo "Build failed, trying to use cache"
+    docker build -t clamp/$type-$image:latest $type/$image
+    if [ "$?" != "0" ]
+    then
+      echo "Build failed on cache, stopping"
+      exit 1
+    fi
   fi
 
   docker tag -f clamp/$type-$image:latest clamp/$type-$image:$version

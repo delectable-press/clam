@@ -1,4 +1,4 @@
-FROM clamp/lib-php-5.6
+FROM clamp/lib-php-7
 MAINTAINER Rob Landers <landers.robert@gmail.com>
 VOLUME /var/www/html
 
