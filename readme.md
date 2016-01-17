@@ -20,7 +20,7 @@ Local development is done using `docker-compose` ...
 
 ## Still to do
 
-- ~memcached~
+- ~~memcached~~
 - varnish
 - uploads
 - plugins and hooks
