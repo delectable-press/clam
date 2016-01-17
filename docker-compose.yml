@@ -22,11 +22,27 @@ php-fpm:
     SECURE_AUTH_SALT: ""
     LOGGED_IN_SALT: ""
     NONCE_SALT: ""
+    # HAProxy Settings
+    TCP_PORTS: 9000
+    BALANCE: leastconn
+php-proxy:
+  image: clamp/run-haproxy:latest
+  links:
+    - php-fpm
+  expose:
+    - "9000"
 nginx:
   image: clamp/run-nginx:latest
   volumes_from:
     - wordpress
-    - php-fpm
+  links:
+    - php-proxy
+  environment:
+    BALANCE: leastconn
+frontend:
+  image: clamp/run-haproxy:latest
+  links:
+    - nginx
   ports:
     - "80:80"
 memcached:
