@@ -64,6 +64,7 @@ buildnpush () {
   type=$3
   version=$2
   image=$1
+  echo "Building clamp/$type-$image:latest"
   docker build --pull -t clamp/$type-$image:latest $type/$image
   if [ "$?" != "0" ]
   then
@@ -87,6 +88,7 @@ buildnpush () {
 cp /root/.docker/config.json /config.json
 pluginBuild() {
   plugin=$1
+  echo "Building plugin $plugin"
   docker run -v /var/run/docker.sock:/var/run/docker.sock \
     --rm \
     clamp/run-composer wpackagist-plugin/$plugin
