@@ -21,6 +21,8 @@ RUN apt-get update \
 # Add the files
 ADD config/ /etc/nginx
 
+ENTRYPOINT ["/usr/sbin/nginx"]
+
 # Expose the ports for nginx
 EXPOSE 80
 EXPOSE 443
