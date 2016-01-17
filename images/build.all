@@ -3,16 +3,33 @@
 if [[ "$@" == "" ]]
 then
   echo "Running with defaults"
-  ./build.all --runs --plugins --cleanup --push
+  ./build.all --runs --plugins --cleanup --push --libs --services
   exit
 fi
 
 while [ "$1" != "" ]
 do
 
+  if [ "$1" == "--seq" ]
+  then
+    IN_BACKGROUND=""
+  else
+    IN_BACKGROUND='true'
+  fi
+
   if [ "$1" == "--runs" ]
   then
     BUILD_RUNS="true"
+  fi
+
+  if [ "$1" == "--libs" ]
+  then
+    BUILD_LIBS="true"
+  fi
+
+  if [ "$1" == "--services" ]
+  then
+    BUILD_SRV="true"
   fi
 
   if [ "$1" == "--plugins" ]
@@ -33,6 +50,15 @@ do
   shift
 
 done
+
+background () {
+  if [ "$IN_BACKGROUND" == "true" ]
+  then
+    $@ &
+  else
+    $@
+  fi
+}
 
 buildnpush () {
   type=$3
@@ -79,18 +105,28 @@ fi
 
 currentversion=$VERSION
 
+if [ "$BUILD_LIBS" == "true" ]
+then
+  background buildnpush php-5.6 $currentversion lib
+  background buildnpush php-7 $currentversion lib
+  wait
+fi
+
 if [ "$BUILD_RUNS" == "true" ]
 then
-  buildnpush php-5.6 $currentversion lib &
-  buildnpush php-7 $currentversion lib &
+  background buildnpush apache $currentversion run
+  background buildnpush mysql $currentversion run
+  background buildnpush plugin $currentversion run
+  background buildnpush smb $currentversion run
+  background buildnpush wordpress $currentversion run
+  background buildnpush memcached $currentversion run
+  background buildnpush nginx $currentversion run
   wait
-  buildnpush apache $currentversion run &
-  buildnpush composer $currentversion run &
-  buildnpush mysql $currentversion run &
-  buildnpush plugin $currentversion run &
-  buildnpush smb $currentversion run &
-  buildnpush wordpress $currentversion run &
-  buildnpush memcached $currentversion run &
+fi
+
+if [ "$BUILD_SRV" == "true" ]
+then
+  background buildnpush composer $currentversion srv
   wait
 fi
 
@@ -102,12 +138,12 @@ fi
 
 if [ "$BUILD_PLUGINS" == "true" ]
 then
-  pluginBuild akismet &
-  pluginBuild application-insights &
-  pluginBuild crayon-syntax-highlighter &
-  pluginBuild disable-responsive-images &
-  pluginBuild google-analytics-for-wordpress &
-  pluginBuild jetpack &
-  pluginBuild sendgrid-email-delivery-simplified &
+  background pluginBuild akismet
+  background pluginBuild application-insights
+  background pluginBuild crayon-syntax-highlighter
+  background pluginBuild disable-responsive-images
+  background pluginBuild google-analytics-for-wordpress
+  background pluginBuild jetpack
+  background pluginBuild sendgrid-email-delivery-simplified
   wait
 fi
