@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM clamp/lib-base
 MAINTAINER Rob Landers <landers.robert@gmail.com>
 
 RUN echo \
@@ -13,4 +13,6 @@ RUN echo \
         php-mysql \
         php-gd \
         php-curl \
+    && apt-get purge -y apache2 apache2-bin apache2-data \
+    && apt-get autoremove -y \
     && apt-get clean

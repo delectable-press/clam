@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM clamp/lib-base
 MAINTAINER Robert Landers <rlanders@boomtownroi.com>
 
 # Install nginx and have it forward logs to Docker

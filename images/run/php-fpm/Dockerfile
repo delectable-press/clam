@@ -5,9 +5,15 @@ RUN apt-get update \
     && apt-get install -y php-fpm \
     && apt-get clean \
     && phpenmod opcache \
+    && phpenmod pdo-mysql \
     && mkdir -p /var/run/fpm \
     && ln -sf /dev/stdout /var/log/php7.0-fpm.log
 
-ENTRYPOINT ["/usr/sbin/php-fpm7.0", "-F"]
+COPY config/ /etc/php/7.0/fpm
+COPY serve.sh /serve.sh
+
+RUN chmod +x /serve.sh
+
+ENTRYPOINT ["/serve.sh"]
 
 VOLUME /var/run/fpm

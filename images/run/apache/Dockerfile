@@ -3,7 +3,7 @@ MAINTAINER Rob Landers <landers.robert@gmail.com>
 VOLUME /var/www/html
 
 RUN apt-get update \
-    && apt-get install apache2 \
+    && apt-get install -y apache2 \
     && apt-get clean \
     && a2enmod rewrite \
     && ln -sf /proc/self/fd/1 /var/log/apache2/access.log \
