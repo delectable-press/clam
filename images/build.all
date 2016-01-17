@@ -123,6 +123,7 @@ then
   background buildnpush wordpress $currentversion run
   background buildnpush memcached $currentversion run
   background buildnpush nginx $currentversion run
+  background buildnpush php-fpm $currentversion run
   wait
 fi
 
