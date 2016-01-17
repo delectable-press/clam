@@ -7,7 +7,6 @@ RUN echo \
     && apt-get update \
     && apt-get install -y \
         php7.0 \
-        php-xdebug \
         php-memcached \
         php-mcrypt \
         php-mysql \

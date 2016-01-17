@@ -73,6 +73,7 @@ wordpress:
     - google-analytics-for-wordpress
     - jetpack
     - sendgrid-email-delivery-simplified
+    - twentysixteen
     # End plugins
 akismet:
   image: clamp/plugin-akismet:latest
@@ -88,3 +89,5 @@ jetpack:
   image: clamp/plugin-jetpack:latest
 sendgrid-email-delivery-simplified:
   image: clamp/plugin-sendgrid-email-delivery-simplified
+twentysixteen:
+  image: clamp/theme-twentysixteen

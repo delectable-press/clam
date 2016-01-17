@@ -40,6 +40,11 @@ do
     BUILD_PLUGINS="true"
   fi
 
+  if [ "$1" == "--themes" ]
+  then
+    BUILD_THEMES="true"
+  fi
+
   if [ "$1" == "--cleanup" ]
   then
     CLEANUP="true"
@@ -86,14 +91,15 @@ buildnpush () {
 cp /root/.docker/config.json /config.json
 pluginBuild() {
   plugin=$1
+  type=$2
   echo "Building plugin $plugin"
   docker run -v /var/run/docker.sock:/var/run/docker.sock \
     --rm \
-    clamp/run-composer wpackagist-plugin/$plugin
+    clamp/srv-composer wpackagist-$type/$plugin
   if [ "$PUSH" == "true" ]
   then
     sleep 1
-    docker push clamp/plugin-$plugin
+    docker push clamp/$type-$plugin
   fi
 }
 
@@ -141,12 +147,23 @@ fi
 
 if [ "$BUILD_PLUGINS" == "true" ]
 then
-  background pluginBuild akismet
-  background pluginBuild application-insights
-  background pluginBuild crayon-syntax-highlighter
-  background pluginBuild disable-responsive-images
-  background pluginBuild google-analytics-for-wordpress
-  background pluginBuild jetpack
-  background pluginBuild sendgrid-email-delivery-simplified
+  background pluginBuild akismet plugin
+  background pluginBuild application-insights plugin
+  background pluginBuild crayon-syntax-highlighter plugin
+  background pluginBuild disable-responsive-images plugin
+  background pluginBuild google-analytics-for-wordpress plugin
+  background pluginBuild jetpack plugin
+  background pluginBuild sendgrid-email-delivery-simplified plugin
   wait
+fi
+
+if [ "$BUILD_THEMES" == "true" ]
+then
+  background pluginBuild twentyeleven theme
+  background pluginBuild twentyfifteen theme
+  background pluginBuild twentyfourteen theme
+  background pluginBuild twentyten theme
+  background pluginBuild twentythirteen theme
+  background pluginBuild twentytwelve theme
+  background pluginBuild twentysixteen theme
 fi

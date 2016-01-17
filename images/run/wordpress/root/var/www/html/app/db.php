@@ -371,7 +371,7 @@ class hyperdb extends wpdb {
 		$this->run_callbacks( 'dataset_found', $dataset );
 
 		if ( empty( $this->hyper_servers ) ) {
-			if ( is_resource( $this->dbh ) )
+			if ( is_object( $this->dbh ) )
 				return $this->dbh;
 			if (
 				!defined('DB_HOST')
@@ -379,8 +379,8 @@ class hyperdb extends wpdb {
 				|| !defined('DB_PASSWORD')
 				|| !defined('DB_NAME') )
 				return $this->bail("We were unable to query because there was no database defined.");
-			$this->dbh = @ $connect_function(DB_HOST, DB_USER, DB_PASSWORD, true);
-			if ( ! is_resource( $this->dbh ) )
+			$this->dbh = mysqli_connect( ($this->persistent ? "p" : "") . DB_HOST, DB_USER, DB_PASSWORD);
+			if ( ! is_object( $this->dbh ) )
 				return $this->bail("We were unable to connect to the database. (DB_HOST)");
 			if ( ! mysqli_select_db($this->dbh, DB_NAME) )
 				return $this->bail("We were unable to select the database.");
@@ -422,7 +422,7 @@ class hyperdb extends wpdb {
 		}
 
 		// Try to reuse an existing connection
-		while ( isset( $this->dbhs[$dbhname] ) && is_resource( $this->dbhs[$dbhname] ) ) {
+		while ( isset( $this->dbhs[$dbhname] ) && is_object( $this->dbhs[$dbhname] ) ) {
 			// Find the connection for incrementing counters
 			foreach ( array_keys($this->db_connections) as $i )
 				if ( $this->db_connections[$i]['dbhname'] == $dbhname )
@@ -583,7 +583,7 @@ class hyperdb extends wpdb {
 
 				$elapsed = $this->timer_stop();
 
-				if ( is_resource( $this->dbhs[$dbhname] ) ) {
+				if ( is_object( $this->dbhs[$dbhname] ) ) {
 					/**
 					 * If we care about lag, disconnect lagged slaves and try to find others.
 					 * We don't disconnect if it is the last lagged slave and it is with the best preference.
@@ -633,7 +633,7 @@ class hyperdb extends wpdb {
 				$this->print_error( $msg );
 			}
 
-			if ( !$success || !isset($this->dbhs[$dbhname]) || !is_resource( $this->dbhs[$dbhname] ) ) {
+			if ( !$success || !isset($this->dbhs[$dbhname]) || !is_object( $this->dbhs[$dbhname] ) ) {
 				if ( !isset( $ignore_slave_lag ) && count( $unique_lagged_slaves ) ) { 
 					// Lagged slaves were not used. Ignore the lag for this connection attempt and retry.
 					$ignore_slave_lag = true;
@@ -708,7 +708,7 @@ class hyperdb extends wpdb {
 			wp_die( "$charset charset isn't supported in HyperDB for security reasons" );
 
 		if ( $this->has_cap( 'collation', $dbh ) && !empty( $charset ) ) {
-			if ( function_exists( 'mysql_set_charset' ) && $this->has_cap( 'set_charset', $dbh ) ) {
+			if ( function_exists( 'mysqli_set_charset' ) && $this->has_cap( 'set_charset', $dbh ) ) {
 				mysqli_set_charset( $dbh, $charset );
 				$this->real_escape = true;
 			} else {
@@ -728,7 +728,7 @@ class hyperdb extends wpdb {
 		if ( $k = array_search($dbhname, $this->open_connections) )
 			unset($this->open_connections[$k]);
 
-		if ( is_resource($this->dbhs[$dbhname]) )
+		if ( is_object($this->dbhs[$dbhname]) )
 			mysqli_close($this->dbhs[$dbhname]);
 
 		unset($this->dbhs[$dbhname]);
@@ -763,13 +763,13 @@ class hyperdb extends wpdb {
 		// Keep track of the last query for debug..
 		$this->last_query = $query;
 
-		if ( preg_match('/^\s*SELECT\s+FOUND_ROWS(\s*)/i', $query) && is_resource($this->last_found_rows_result) ) {
+		if ( preg_match('/^\s*SELECT\s+FOUND_ROWS(\s*)/i', $query) && is_object($this->last_found_rows_result) ) {
 			$this->result = $this->last_found_rows_result;
 			$elapsed = 0;
 		} else {
 			$this->dbh = $this->db_connect( $query );
 
-			if ( ! is_resource($this->dbh) )
+			if ( ! is_object($this->dbh) )
 				return false;
 
 			$this->timer_start();
@@ -895,7 +895,7 @@ class hyperdb extends wpdb {
 	function db_version( $dbh_or_table = false ) {
 		if ( !$dbh_or_table && $this->dbh )
 			$dbh =& $this->dbh;
-		elseif ( is_resource( $dbh_or_table ) )
+		elseif ( is_object( $dbh_or_table ) )
 			$dbh =& $dbh_or_table;
 		else
 			$dbh = $this->db_connect( "SELECT FROM $dbh_or_table $this->users" );
