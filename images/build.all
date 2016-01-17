@@ -122,7 +122,6 @@ fi
 
 if [ "$BUILD_RUNS" == "true" ]
 then
-  background buildnpush apache $currentversion run
   background buildnpush mysql $currentversion run
   background buildnpush plugin $currentversion run
   background buildnpush smb $currentversion run
