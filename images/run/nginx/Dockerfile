@@ -9,7 +9,7 @@ RUN apt-get update \
     && echo "deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx" >> /etc/apt/sources.list.d/nginx.list \
     && echo "deb-src http://nginx.org/packages/mainline/ubuntu/ trusty nginx" >> /etc/apt/sources.list.d/nginx.list \
     && wget -q -O- http://nginx.org/keys/nginx_signing.key | apt-key add - \
-    && apt-get install -y nginx \
+    && apt-get install -y nginx nginx-extras \
     && apt-get remove --purge -y wget \
     && apt-get autoremove -y \
     && apt-get clean \
@@ -19,9 +19,12 @@ RUN apt-get update \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
 # Add the files
-ADD config/ /etc/nginx
+COPY config/ /etc/nginx
+COPY serve.sh /serve.sh
 
-ENTRYPOINT ["/usr/sbin/nginx"]
+RUN chmod +x /serve.sh
+
+ENTRYPOINT ["/serve.sh"]
 
 # Expose the ports for nginx
 EXPOSE 80

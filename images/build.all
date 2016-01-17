@@ -128,6 +128,7 @@ then
   background buildnpush memcached $currentversion run
   background buildnpush nginx $currentversion run
   background buildnpush php-fpm $currentversion run
+  background buildnpush haproxy $currentversion run
   wait
 fi
 

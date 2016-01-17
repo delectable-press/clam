@@ -13,6 +13,7 @@ COPY config/ /etc/php/7.0/fpm
 COPY serve.sh /serve.sh
 
 RUN chmod +x /serve.sh
+EXPOSE 9000
 
 ENTRYPOINT ["/serve.sh"]
 
