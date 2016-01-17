@@ -1,2 +1,2 @@
-FROM tutum/mysql:5.6
+FROM clamp/lib-mysql
 MAINTAINER Rob Landers <landers.robert@gmail.com>

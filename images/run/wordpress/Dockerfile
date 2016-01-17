@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM clamp/lib-base
 MAINTAINER Rob Landers <landers.robert@gmail.com>
 ADD root /
 

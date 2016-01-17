@@ -3,16 +3,36 @@
 if [[ "$@" == "" ]]
 then
   echo "Running with defaults"
-  ./build.all --runs --plugins --cleanup --push
+  ./build.all --runs --plugins --cleanup --push --libs --services
   exit
 fi
 
 while [ "$1" != "" ]
 do
 
+  if [ "$1" == "--seq" ]
+  then
+    IN_BACKGROUND="false"
+  else
+    if [ "$IN_BACKGROUND" != "false" ]
+    then
+      IN_BACKGROUND='true'
+    fi
+  fi
+
   if [ "$1" == "--runs" ]
   then
     BUILD_RUNS="true"
+  fi
+
+  if [ "$1" == "--libs" ]
+  then
+    BUILD_LIBS="true"
+  fi
+
+  if [ "$1" == "--services" ]
+  then
+    BUILD_SRV="true"
   fi
 
   if [ "$1" == "--plugins" ]
@@ -34,11 +54,21 @@ do
 
 done
 
+background () {
+  if [ "$IN_BACKGROUND" == "true" ]
+  then
+    $@ &
+  else
+    $@
+  fi
+}
+
 buildnpush () {
-  type=$3
-  version=$2
-  image=$1
-  docker build --pull -t clamp/$type-$image:latest $type/$image
+  image=$1 && shift
+  version=$1 && shift
+  type=$1 && shift
+  echo "Building clamp/$type-$image:latest"
+  docker build $@ -t clamp/$type-$image:latest $type/$image
   if [ "$?" != "0" ]
   then
     echo "Build failed, stopping"
@@ -56,6 +86,7 @@ buildnpush () {
 cp /root/.docker/config.json /config.json
 pluginBuild() {
   plugin=$1
+  echo "Building plugin $plugin"
   docker run -v /var/run/docker.sock:/var/run/docker.sock \
     --rm \
     clamp/run-composer wpackagist-plugin/$plugin
@@ -74,16 +105,31 @@ fi
 
 currentversion=$VERSION
 
+if [ "$BUILD_LIBS" == "true" ]
+then
+  background buildnpush base $currentversion lib --pull
+  background buildnpush mysql $currentversion lib --pull
+  background buildnpush php-5.6 $currentversion lib
+  background buildnpush php-7 $currentversion lib
+  wait
+fi
+
 if [ "$BUILD_RUNS" == "true" ]
 then
-  buildnpush php-5.6 $currentversion lib
-  buildnpush apache $currentversion run &
-  buildnpush composer $currentversion run &
-  buildnpush mysql $currentversion run &
-  buildnpush plugin $currentversion run &
-  buildnpush smb $currentversion run &
-  buildnpush wordpress $currentversion run &
-  buildnpush memcached $currentversion run &
+  background buildnpush apache $currentversion run
+  background buildnpush mysql $currentversion run
+  background buildnpush plugin $currentversion run
+  background buildnpush smb $currentversion run
+  background buildnpush wordpress $currentversion run
+  background buildnpush memcached $currentversion run
+  background buildnpush nginx $currentversion run
+  background buildnpush php-fpm $currentversion run
+  wait
+fi
+
+if [ "$BUILD_SRV" == "true" ]
+then
+  background buildnpush composer $currentversion srv
   wait
 fi
 
@@ -95,12 +141,12 @@ fi
 
 if [ "$BUILD_PLUGINS" == "true" ]
 then
-  pluginBuild akismet &
-  pluginBuild application-insights &
-  pluginBuild crayon-syntax-highlighter &
-  pluginBuild disable-responsive-images &
-  pluginBuild google-analytics-for-wordpress &
-  pluginBuild jetpack &
-  pluginBuild sendgrid-email-delivery-simplified &
+  background pluginBuild akismet
+  background pluginBuild application-insights
+  background pluginBuild crayon-syntax-highlighter
+  background pluginBuild disable-responsive-images
+  background pluginBuild google-analytics-for-wordpress
+  background pluginBuild jetpack
+  background pluginBuild sendgrid-email-delivery-simplified
   wait
 fi

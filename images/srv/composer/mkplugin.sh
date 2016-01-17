@@ -51,17 +51,17 @@ setBasePrefix() {
 
 case "$2" in
   "wpackagist-plugin")
-    base="ubuntu:14.04"
+    base="clamp/lib-base"
     prefix="plugin"
     path="/var/www/html/app/plugins/$1"
   ;;
   "wpackagist-muplugin")
-    base="ubuntu:14.04"
+    base="clamp/lib-base"
     prefix="muplugin"
     path="/var/www/html/app/mu-plugins/$1"
   ;;
   "wpackagist-theme")
-    base="ubuntu:14.04"
+    base="clamp/lib-base"
     prefix="theme"
     path="/var/www/html/app/themes/$1"
   ;;

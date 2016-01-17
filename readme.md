@@ -90,6 +90,16 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock -v ~/.docker/config.json
 docker-compose up
 ```
 
+# Available builder options
+
+- `--libs`: Builds all library containers
+- `--runs`: Builds all runable containers that provide continuous services, like web servers.
+- `--services`: Builds all infrastructure services, these are single run containers that usually are triggered by events
+- `--plugins`: Builds a default set of plugins
+- `--cleanup`: Runs spotify/docker-gc and removes stale containers and images
+- `--push`: Pushes the current version tag (What passes for a release right now)
+- `--seq`: Runs builds sequentially instead of in parallel
+
 # License
 
 While this is available to be read for free, I retain all copywrite. It's like a book in the library, you can borrow it,
