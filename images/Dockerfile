@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM clamp/base
 MAINTAINER Rob Landers <landers.robert@gmail.com>
 
 RUN apt-get update \
