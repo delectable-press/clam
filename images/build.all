@@ -107,7 +107,7 @@ currentversion=$VERSION
 
 if [ "$BUILD_LIBS" == "true" ]
 then
-  background buildnpush base $currentversion lib --pull
+  buildnpush base $currentversion lib --pull
   background buildnpush mysql $currentversion lib --pull
   background buildnpush php-5.6 $currentversion lib
   background buildnpush php-7 $currentversion lib
