@@ -1,4 +1,4 @@
-FROM clamp/base
+FROM clamp/lib-base
 MAINTAINER Rob Landers <landers.robert@gmail.com>
 
 RUN apt-get update \
