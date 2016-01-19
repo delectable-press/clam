@@ -72,7 +72,7 @@ db_slave:
   ports:
     - "3307:3307"
 uploads:
-  image: ubuntu:14.04
+  image: clamp/lib-base
   volumes:
     - ./data:/var/www/html/app/uploads
 wordpress:
