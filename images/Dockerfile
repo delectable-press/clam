@@ -11,8 +11,8 @@ RUN apt-get update \
     && apt-get clean
 
 COPY . /build
-ENV VERSION 0.1
-LABEL version="0.1" description="Builds clamp"
+ENV VERSION 0.2.0
+LABEL version="0.2.0" description="Builds clamp"
 
 RUN chmod +x /build/build.all
 
