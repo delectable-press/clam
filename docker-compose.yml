@@ -48,7 +48,7 @@ frontend:
 memcached:
   image: clamp/run-memcached:latest
 db-data:
-  image: ubuntu:14.04
+  image: clamp/lib-volume
 db:
   image: clamp/run-mysql:latest
   volumes_from:
@@ -72,7 +72,7 @@ db_slave:
   ports:
     - "3307:3307"
 uploads:
-  image: clamp/lib-base
+  image: clamp/lib-volume
   volumes:
     - ./data:/var/www/html/app/uploads
 wordpress:
