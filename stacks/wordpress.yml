@@ -62,6 +62,7 @@ php-fpm:
   sequential_deployment: true
   volumes_from:
     - wordpress
+  target_num_containers: 2
 php-proxy:
   image: 'clamp/run-haproxy:latest'
   environment:
@@ -72,46 +73,56 @@ php-proxy:
     - php-fpm
   sequential_deployment: true
 plugin-akismet:
+  target_num_containers: 2
   image: 'clamp/plugin-akismet:latest'
-  deployment_strategy: every_node
+  #deployment_strategy: every_node
   sequential_deployment: true
 plugin-application-insights-6d6a4cfc:
+  target_num_containers: 2
   image: 'clamp/plugin-application-insights:latest'
-  deployment_strategy: every_node
+  #deployment_strategy: every_node
   sequential_deployment: true
 plugin-crayon-syntax-highlighter-64e34279:
+  target_num_containers: 2
   image: 'clamp/plugin-crayon-syntax-highlighter:latest'
-  deployment_strategy: every_node
+  #deployment_strategy: every_node
   sequential_deployment: true
 plugin-disable-responsive-images-9ba92561:
+  target_num_containers: 2
   image: 'clamp/plugin-disable-responsive-images:latest'
-  deployment_strategy: every_node
+  #deployment_strategy: every_node
   sequential_deployment: true
 plugin-google-analytics-for-wordpress-fb59d865:
+  target_num_containers: 2
   image: 'clamp/plugin-google-analytics-for-wordpress:latest'
-  deployment_strategy: every_node
+  #deployment_strategy: every_node
   sequential_deployment: true
 plugin-jetpack-a0bf99de:
+  target_num_containers: 2
   image: 'clamp/plugin-jetpack:latest'
-  deployment_strategy: every_node
+  #deployment_strategy: every_node
   sequential_deployment: true
 plugin-sendgrid-email-delivery-simplified-12a5a645:
+  target_num_containers: 2
   image: 'clamp/plugin-sendgrid-email-delivery-simplified:latest'
-  deployment_strategy: every_node
+  #deployment_strategy: every_node
   sequential_deployment: true
 theme-twentysixteen-9826fda1:
+  target_num_containers: 2
   image: 'clamp/theme-twentysixteen:latest'
-  deployment_strategy: every_node
+  #deployment_strategy: every_node
   sequential_deployment: true
 uploads:
+  target_num_containers: 2
   image: 'clamp/lib-volume:latest'
-  deployment_strategy: every_node
+  #deployment_strategy: every_node
   sequential_deployment: true
   volumes:
     - /var/www/html/app/uploads
 wordpress:
+  target_num_containers: 2
   image: 'clamp/run-wordpress:latest'
-  deployment_strategy: every_node
+  #deployment_strategy: every_node
   sequential_deployment: true
   volumes_from:
     - uploads
