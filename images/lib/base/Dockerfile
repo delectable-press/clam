@@ -10,4 +10,6 @@ RUN apt-get-install-min wget unzip \
     && unzip vault_${VAULT_VERSION}_linux_amd64.zip \
     && rm -rf vault_${VAULT_VERSION}_linux_amd64.zip \
     && apt-get remove wget unzip -y --purge \
-    && apt-get clean
+    && apt-get clean \
+    && mv vault /bin \
+    && mv consul /bin
