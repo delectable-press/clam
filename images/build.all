@@ -94,8 +94,8 @@ pluginBuild() {
   type=$2
   echo "Building plugin $plugin"
   docker run -v /var/run/docker.sock:/var/run/docker.sock \
-    --rm \
-    clamp/srv-composer wpackagist-$type/$plugin
+    --rm -e plugin=wpackagist-$type/$plugin \
+    clamp/srv-composer
   if [ "$PUSH" == "true" ]
   then
     sleep 1

@@ -1,7 +1,4 @@
-#!/usr/bin/env bash
-
-plugin="$1"
-others="$2"
+#!/usr/bin/with-contenv bash
 
 type=$(dirname $plugin)
 plugin=$(basename $plugin)
@@ -38,7 +35,7 @@ writeComposer $plugin $type
 composerInstall() {
 cd /plugin
 
-composer install
+composer install --prefer-dist
 
 version=$(composer show -i $2/$1 | grep versions)
 version="${version#*:}"
