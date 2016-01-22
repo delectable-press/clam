@@ -1,1 +1,2 @@
-FROM clamp/lib-volume:latest
+FROM clamp/lib-php7:latest
+
