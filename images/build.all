@@ -113,10 +113,13 @@ currentversion=$VERSION
 
 if [ "$BUILD_LIBS" == "true" ]
 then
-  buildnpush base $currentversion lib --pull
-  background buildnpush mysql $currentversion lib --pull
-  background buildnpush php-7 $currentversion lib
   background buildnpush volume $currentversion lib --pull
+  wait
+  buildnpush base $currentversion lib
+  background buildnpush mysql $currentversion lib
+  background buildnpush php-7 $currentversion lib
+  wait
+  background buildnpush distributed-volume $currentversion lib
   wait
 fi
 
