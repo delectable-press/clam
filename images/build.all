@@ -119,8 +119,6 @@ then
   background buildnpush mysql $currentversion lib
   background buildnpush php-7 $currentversion lib
   wait
-  background buildnpush distributed-volume $currentversion lib
-  wait
 fi
 
 if [ "$BUILD_RUNS" == "true" ]

@@ -13,3 +13,4 @@ RUN apt-get-install-min wget unzip \
     && apt-get clean \
     && mv vault /bin \
     && mv consul /bin
+COPY start_consul.sh /start_consul.sh

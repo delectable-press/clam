@@ -1,0 +1,50 @@
+consul:
+  labels:
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=consul
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label: location=azureeast
+    io.rancher.container.hostname_override: container_name
+  command:
+  - /start_consul.sh
+  - -server
+  - -bootstrap-expect
+  - '3'
+  - -data-dir
+  - /data
+  - -join
+  - consul
+  image: clamp/lib-base:latest
+consul-node:
+  labels:
+    io.rancher.scheduler.global: 'true'
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=consul
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label: location=azureeast
+    io.rancher.container.hostname_override: container_name
+  command:
+  - /start_consul.sh
+  - -data-dir
+  - /data
+  - -join
+  - consul
+  image: clamp/lib-base:latest
+  links:
+  - 'consul:'
+consul-ui:
+  labels:
+    io.rancher.scheduler.global: 'true'
+    io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=consul
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label: location=azureeast
+    io.rancher.container.hostname_override: container_name
+  tty: true
+  command:
+  - /start_consul.sh
+  - -data-dir
+  - /data
+  - -join
+  - consul
+  - -ui
+  image: clamp/lib-base:latest
+  links:
+  - 'consul:'
