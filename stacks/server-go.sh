@@ -22,6 +22,7 @@ set -e
 
 if [ ! -f /mnt/swap ]
 then
+  sleep 300
   fallocate -l 50G /mnt/swap
   chmod 600 /mnt/swap
 fi
@@ -35,7 +36,7 @@ swapon /mnt/swap
 EOF
 
 chmod +x /etc/init.d/swap
-update-rc.d swap defaults
+update-rc.d swap defaults 99 01
 /etc/init.d/swap
 
 echo "Swap file created"
@@ -88,7 +89,7 @@ update-grub
 update-initramfs -u
 
 echo "Adding trim to crontab"
-echo "0 * * * * fstab /var/lib/docker" | crontab -
+echo "0 * * * * fstrim /var/lib/docker" | crontab -
 
 echo "Everything figured out -- rebooting"
 reboot
