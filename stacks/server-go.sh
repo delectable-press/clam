@@ -19,16 +19,21 @@ cat > /etc/init.d/swap <<EOF
 ### END INIT INFO
 
 set -e
+function do_swap() {
+    if [ ! -f /mnt/swap ]
+    then
+      sleep 100
+      fallocate -l 50G /mnt/swap
+      chmod 600 /mnt/swap
+    fi
 
-if [ ! -f /mnt/swap ]
-then
-  sleep 300
-  fallocate -l 50G /mnt/swap
-  chmod 600 /mnt/swap
-fi
+    mkswap /mnt/swap
+    swapon /mnt/swap
+    echo "Swap enabled"
+}
 
-mkswap /mnt/swap
-swapon /mnt/swap
+do_swap &
+echo "Swap being built"
 
 # Put in /etc/init.d/swap
 # chmod +x /etc/init.d/swap
@@ -91,5 +96,19 @@ update-initramfs -u
 echo "Adding trim to crontab"
 echo "0 * * * * fstrim /var/lib/docker" | crontab -
 
+if [ "$1" == "" ]
+then
+    echo "No url given, no rancher setup initialized"
+else
+    docker run -d --privileged \
+        -e CATTLE_HOST_LABELS='hardware=virtual&hardware_type=azure' \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        rancher/agent:v0.8.2 \
+        $1
+    sleep 120
+fi
+
 echo "Everything figured out -- rebooting"
+fstrim /
+fstrim /var/lib/docker
 reboot
