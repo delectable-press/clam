@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bash
+
+source /common.sh
+
+exec consul agent -bind $(get_container_primary_ip) $(DC) -config-dir /etc/consul.d/server -join consul

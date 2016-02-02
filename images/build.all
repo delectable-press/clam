@@ -118,6 +118,8 @@ then
   buildnpush base $currentversion lib
   background buildnpush mysql $currentversion lib
   background buildnpush php-7 $currentversion lib
+  background buildnpush glusterfs $currentversion lib
+  background buildnpush consul-server $currentversion lib
   wait
 fi
 
