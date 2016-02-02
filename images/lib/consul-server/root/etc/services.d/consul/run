@@ -2,4 +2,17 @@
 
 source /common.sh
 
-exec consul agent -bind $(get_container_primary_ip) $(DC) -config-dir /etc/consul.d/server -join consul
+if [ "$BOOTSTRAP" != "" ]
+then
+    exec /bootstrap.sh
+    exit 0
+fi
+
+self=$(curl -s -H 'Accept: application/json' ${META_URL}/self/container| jq -r .name)
+
+if [ "$MODE" != "client" ]
+then
+    MODE="server"
+fi
+
+exec consul agent $(DC) -config-dir /etc/consul.d/$MODE -advertise $(get_container_primary_ip $self) -retry-join consul
