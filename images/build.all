@@ -3,7 +3,7 @@
 if [[ "$@" == "" ]]
 then
   echo "Running with defaults"
-  ./build.all --runs --plugins --cleanup --push --libs --services --themes
+  ./build.all --runs --plugins --cleanup --push --libs --services --themes --bases
   exit
 fi
 
@@ -18,6 +18,11 @@ do
     then
       IN_BACKGROUND='true'
     fi
+  fi
+
+  if [ "$1" == "--bases" ]
+  then
+    BUILD_BASES="true"
   fi
 
   if [ "$1" == "--runs" ]
@@ -111,11 +116,16 @@ fi
 
 currentversion=$VERSION
 
-if [ "$BUILD_LIBS" == "true" ]
+if [ "$BUILD_BASES" == "true" ]
 then
   background buildnpush volume $currentversion lib --pull
   wait
-  buildnpush base $currentversion lib
+  buildnpush base $currentversion lib &
+  wait
+fi
+
+if [ "$BUILD_LIBS" == "true" ]
+then
   background buildnpush mysql $currentversion lib
   background buildnpush php-7 $currentversion lib
   background buildnpush glusterfs $currentversion lib

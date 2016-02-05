@@ -1,4 +1,4 @@
-FROM clamp/lib-base:latest
+FROM clamp/lib-consul-server:latest
 
 RUN apt-get-install-min glusterfs-server glusterfs-client jq curl
 

@@ -2,6 +2,7 @@ FROM clamp/lib-volume:latest
 
 ENV CONSUL_VERSION=0.6.3
 ENV VAULT_VERSION=0.4.1
+COPY common.sh /common.sh
 RUN apt-get-install-min wget unzip \
     && wget https://releases.hashicorp.com/consul/$CONSUL_VERSION/consul_${CONSUL_VERSION}_linux_amd64.zip \
     && unzip consul_${CONSUL_VERSION}_linux_amd64.zip \
@@ -12,5 +13,5 @@ RUN apt-get-install-min wget unzip \
     && apt-get remove wget unzip -y --purge \
     && apt-get clean \
     && mv vault /bin \
-    && mv consul /bin
-COPY start_consul.sh /start_consul.sh
+    && mv consul /bin \
+    && chmod +x /*.sh
