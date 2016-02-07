@@ -12,3 +12,4 @@ build:
       - /lib:/lib:ro
       - /lib64:/lib64:ro
       - /sys:/sys:ro
+      - /usr:/usr:ro
