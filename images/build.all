@@ -3,7 +3,7 @@
 if [[ "$@" == "" ]]
 then
   echo "Running with defaults"
-  ./build.all --runs --plugins --cleanup --push --libs --services --themes --bases
+  ./build.all --bases --runs --plugins --cleanup --push --libs --services --themes --bases
   exit
 fi
 

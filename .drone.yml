@@ -13,3 +13,5 @@ build:
       - /lib64:/lib64:ro
       - /sys:/sys:ro
       - /usr:/usr:ro
+    environment:
+      - VERSION=0.2
