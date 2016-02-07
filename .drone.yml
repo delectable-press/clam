@@ -1,0 +1,9 @@
+build:
+  bases:
+    image: clamp/lib-base
+    pull: true
+    commands:
+      - images/build.all --bases
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/bin/docker

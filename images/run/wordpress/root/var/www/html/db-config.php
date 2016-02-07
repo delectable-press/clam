@@ -86,8 +86,7 @@ $wpdb->check_tcp_responsiveness = true;
  *							Set null to disable. When not set, the value of $wpdb->default_lag_threshold is used.
  */
 
-$master = getenv('DB_1_PORT_3306_TCP_ADDR');
-$slave = getenv('DB_SLAVE_1_PORT_3306_TCP_ADDR');
+$master = getenv('DB_HOST');
 
 $wpdb->add_database([
 	'host' => $master,
@@ -97,21 +96,6 @@ $wpdb->add_database([
 	'read' => 2,
 	'write' => 1
 ]);
-
-$slaveNumber = 1;
-
-while (!empty($slave)) {
-	$wpdb->add_database([
-		'host' => $slave,
-		'user' => 'admin',
-		'password' => getenv('DB_PASSWORD'),
-		'name' => 'wordpress',
-		'read' => 1,
-		'write' => 0
-	]);
-	$slaveNumber++;
-	$slave = getenv("DB_${slaveNumber}_PORT_3306_TCP_ADDR");
-}
 
 /**
  * $wpdb->add_table( $dataset, $table );
