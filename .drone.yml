@@ -7,6 +7,5 @@ build:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
-      - /etc:/etc:ro
       - /var/lib:/var/lib:ro
       - /bin:/bin:ro
