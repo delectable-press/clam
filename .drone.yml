@@ -10,3 +10,5 @@ build:
       - /var/lib:/var/lib:ro
       - /bin:/bin:ro
       - /lib:/lib:ro
+      - /lib64:/lib64:ro
+      - /sys:/sys:ro
