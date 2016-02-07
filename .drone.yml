@@ -9,3 +9,4 @@ build:
       - /usr/bin/docker:/usr/bin/docker
       - /var/lib:/var/lib:ro
       - /bin:/bin:ro
+      - /lib:/lib:ro
