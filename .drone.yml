@@ -15,4 +15,5 @@ build:
       - /usr:/usr:ro
     environment:
       - VERSION=0.2
-    path: /build
+    clone:
+      path: /build
