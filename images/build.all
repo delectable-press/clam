@@ -3,7 +3,7 @@
 if [[ "$@" == "" ]]
 then
   echo "Running with defaults"
-  ./build.all --bases --runs --plugins --cleanup --push --libs --services --themes --bases
+  ./build.all --seq --bases --runs --plugins --cleanup --push --libs --services --themes
   exit
 fi
 
@@ -165,6 +165,7 @@ then
   background pluginBuild google-analytics-for-wordpress plugin
   background pluginBuild jetpack plugin
   background pluginBuild sendgrid-email-delivery-simplified plugin
+  background pluginBuild nginx-helper muplugin
   wait
 fi
 

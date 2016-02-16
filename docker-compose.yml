@@ -79,6 +79,7 @@ services:
       - jetpack:ro
       - sendgrid-email-delivery-simplified:ro
       - twentysixteen:ro
+      - nginx-helper:ro
       # End plugins
   akismet:
     image: clamp/plugin-akismet:latest
@@ -96,6 +97,8 @@ services:
     image: clamp/plugin-sendgrid-email-delivery-simplified
   twentysixteen:
     image: clamp/theme-twentysixteen
+  nginx-helper:
+    image: clamp/plugin-nginx-helper
 networks:
   default:
     driver: overlay
