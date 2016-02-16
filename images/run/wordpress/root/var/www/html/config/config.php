@@ -14,8 +14,8 @@ if (file_exists($env_config)) {
 /**
  * URLs
  */
-define('WP_HOME', getenv('WP_HOME'));
-define('WP_SITEURL', getenv('WP_SITEURL'));
+//define('WP_HOME', getenv('WP_HOME'));
+//define('WP_SITEURL', getenv('WP_SITEURL'));
 /**
  * Custom Content Directory
  */
@@ -60,5 +60,5 @@ define('DISALLOW_FILE_EDIT', true);
  * Bootstrap WordPress
  */
 if (!defined('ABSPATH')) {
-    define('ABSPATH', $webroot_dir . '/wordpress/');
+    define('ABSPATH', $webroot_dir);
 }

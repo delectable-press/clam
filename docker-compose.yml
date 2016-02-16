@@ -15,8 +15,6 @@ services:
       DB_PASSWORD: "password"
       DB_HOST: "db"
       WP_ENV: "development"
-      WP_HOME: "http://192.168.99.100"
-      WP_SITE_URL: "http://192.168.99.100"
       AUTH_KEY: ""
       SECURE_AUTH_KEY: ""
       LOGGED_IN_KEY: ""
@@ -39,6 +37,8 @@ services:
       - "1936:1936"
   nginx:
     image: clamp/run-nginx:latest
+    volumes:
+      - ./images/run/nginx/config:/etc/nginx
     volumes_from:
       - wordpress:ro
       - uploads:rw
