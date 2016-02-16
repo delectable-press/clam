@@ -1,8 +1,7 @@
 # A truly dockerized WordPress
 
-A lot of dockerized WordPresses out there clash with the "docker way". This is an attempt to set the record straight and
-get a nicely done dockerized WordPress off the ground. There's still a long way to, but it will get there, one step at 
-a time. *This is nowhere near production ready*
+The goal is to make wordpress hyper-scalable for production use in Docker. There's still work to do; please feel free
+to contribute in any way by opening an issue or a PR.
 
 **I spend my day job on OSX and my night work on Windows, so this repo will remain OS agnostic.** 
 
@@ -18,11 +17,12 @@ replicas would still be serving clients.
 
 Local development is done using `docker-compose` ...
 
+To get started, simply clone this repo and edit any variables (such as WP_HOME, WP_SITEURL), then run `docker-compose up`.
+
+It's designed to be run with docker swarm.
+
 ## Still to do
 
-- ~~memcached~~
-- varnish
-- uploads
 - plugins and hooks
 - automatic builds
 - documentation
@@ -43,18 +43,16 @@ This will get you set up for development
 ## Running it
 
 ``` powershell
-docker-machine create --driver virtualbox --virtualbox-memory=2048 --virtualbox-cpu-count=2 default
-docker-machine.exe env --shell powershell default | Invoke-Expression
+./stacks/start-swarm.ps1
 docker-compose up
 ```
 
 ## Building from source
 
 ``` powershell
-docker-machine create --driver virtualbox --virtualbox-memory=2048 --virtualbox-cpu-count=2 default
-docker-machine.exe env --shell powershell default | Invoke-Expression
+./stacks/start-swarm.ps1
 docker build -t clamp/builder images
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v /c/Users/withi/.docker/config.json:/root/.docker/config.json --rm clamp/builder --runs --plugins --cleanup
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v /c/Users/YourUserName/.docker/config.json:/root/.docker/config.json -v /usr/local/bin/docker:/usr/bin/docker --rm clamp/builder --bases --libs --runs --services --plugins --themes --cleanup --seq
 docker-compose up
 ```
 
@@ -86,16 +84,18 @@ docker-compose up
 
 ``` bash
 docker build -t clamp/builder images
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v ~/.docker/config.json:/root/.docker/config.json --rm clamp/builder  --cleanup
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v ~/.docker/config.json:/root/.docker/config.json -v /usr/local/bin/docker:/usr/bin/docker --rm clamp/builder --bases --libs --runs --services --plugins --themes --cleanup --seq
 docker-compose up
 ```
 
 # Available builder options
 
+- `--bases`: Builds base images
 - `--libs`: Builds all library containers
 - `--runs`: Builds all runable containers that provide continuous services, like web servers.
 - `--services`: Builds all infrastructure services, these are single run containers that usually are triggered by events
 - `--plugins`: Builds a default set of plugins
+- `--themes`: Builds a default set of themes
 - `--cleanup`: Runs spotify/docker-gc and removes stale containers and images
 - `--push`: Pushes the current version tag (What passes for a release right now)
 - `--seq`: Runs builds sequentially instead of in parallel

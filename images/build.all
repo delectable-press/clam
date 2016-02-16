@@ -165,7 +165,7 @@ then
   background pluginBuild google-analytics-for-wordpress plugin
   background pluginBuild jetpack plugin
   background pluginBuild sendgrid-email-delivery-simplified plugin
-  background pluginBuild nginx-helper muplugin
+  background pluginBuild nginx-helper plugin
   wait
 fi
 
