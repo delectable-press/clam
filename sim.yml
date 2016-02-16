@@ -1,8 +1,0 @@
-version: '2'
-services:
-  storage-manager:
-    container_name: bb_manager
-    image: blockbridge/simulator
-    environment:
-      BB_SIM_MODE: "management"
-    privileged: true
