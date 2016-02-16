@@ -1,3 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-exec glusterd -p /var/run/glusterd.pid -N

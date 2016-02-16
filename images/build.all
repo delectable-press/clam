@@ -128,7 +128,6 @@ if [ "$BUILD_LIBS" == "true" ]
 then
   background buildnpush mysql $currentversion lib
   background buildnpush php-7 $currentversion lib
-  background buildnpush glusterfs $currentversion lib
   background buildnpush consul-server $currentversion lib
   wait
 fi
@@ -137,7 +136,6 @@ if [ "$BUILD_RUNS" == "true" ]
 then
   background buildnpush mysql $currentversion run
   background buildnpush plugin $currentversion run
-  background buildnpush smb $currentversion run
   background buildnpush wordpress $currentversion run
   background buildnpush memcached $currentversion run
   background buildnpush nginx $currentversion run

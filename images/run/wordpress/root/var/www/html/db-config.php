@@ -93,7 +93,7 @@ $wpdb->add_database([
 	'user' => 'admin',
 	'password' => getenv('DB_PASSWORD'),
 	'name' => 'wordpress',
-	'read' => 2,
+	'read' => 1,
 	'write' => 1
 ]);
 

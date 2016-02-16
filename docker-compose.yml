@@ -6,14 +6,13 @@ services:
       - wordpress:ro
       - uploads:rw
     links:
-      - "db:db"
-      - "db_slave:db_slave"
-      - "memcached:memcached_cluster"
+      - db:db
+      - memcached:memcached_cluster
     environment:
       DB_NAME: "wordpress"
       DB_USER: "admin"
       DB_PASSWORD: "password"
-      DB_HOST: "1234"
+      DB_HOST: "db"
       WP_ENV: "development"
       WP_HOME: "http://192.168.99.100"
       WP_SITE_URL: "http://192.168.99.100"
@@ -28,13 +27,15 @@ services:
       # HAProxy Settings
       TCP_PORTS: 9000
       BALANCE: leastconn
-      affinity: "container==*wordpress*"
   php-proxy:
     image: clamp/run-haproxy:latest
     links:
       - php-fpm
     expose:
       - "9000"
+      - "1936"
+    ports:
+      - "1936:1936"
   nginx:
     image: clamp/run-nginx:latest
     volumes_from:
@@ -42,12 +43,6 @@ services:
       - uploads:rw
     links:
       - php-proxy
-    environment:
-      BALANCE: leastconn
-  frontend:
-    image: clamp/run-haproxy:latest
-    links:
-      - nginx
     ports:
       - "80:80"
   memcached:
@@ -60,22 +55,9 @@ services:
       - db-data
     environment:
       ON_CREATE_DB: "wordpress"
-      REPLICATION_MASTER: "true"
-      REPLICATION_PASS: "replica"
       MYSQL_PASS: "password"
     ports:
       - "3306:3306"
-  db_slave:
-    image: clamp/run-mysql:latest
-    environment:
-      ON_CREATE_DB: "wordpress"
-      REPLICATION_SLAVE: "true"
-      REPLICATION_PASS: "replica"
-      MYSQL_PASS: "password"
-    links:
-      - "db:mysql"
-    ports:
-      - "3307:3307"
   uploads:
     image: clamp/lib-volume
     volumes:
@@ -95,49 +77,22 @@ services:
       - sendgrid-email-delivery-simplified:ro
       - twentysixteen:ro
       # End plugins
-    environment:
-      - "affinity:container==*akismet*"
-      - "affinity:container==*application-insights*"
-      - "affinity:container==*crayon-syntax-highlighter*"
-      - "affinity:container==*disable-responsive-images*"
-      - "affinity:container==*google-analytics-for-wordpress*"
-      - "affinity:container==*jetpack*"
-      - "affinity:container==*sendgrid-email-delivery-simplified*"
-      - "affinity:container==*twentysixteen*"
   akismet:
     image: clamp/plugin-akismet:latest
-    environment:
-      - "affinity:container==*uploads*"
   application-insights:
     image: clamp/plugin-application-insights:latest
-    environment:
-      - "affinity:container==*uploads*"
   crayon-syntax-highlighter:
     image: clamp/plugin-crayon-syntax-highlighter:latest
-    environment:
-      - "affinity:container==*uploads*"
   disable-responsive-images:
     image: clamp/plugin-disable-responsive-images:latest
-    depends_on:
-      - "uploads"
-    environment:
-      - "affinity:container==*uploads*"
   google-analytics-for-wordpress:
     image: clamp/plugin-google-analytics-for-wordpress:latest
-    environment:
-      - "affinity:container==*uploads*"
   jetpack:
     image: clamp/plugin-jetpack:latest
-    environment:
-      - "affinity:container==*uploads*"
   sendgrid-email-delivery-simplified:
     image: clamp/plugin-sendgrid-email-delivery-simplified
-    environment:
-      - "affinity:container==*uploads*"
   twentysixteen:
     image: clamp/theme-twentysixteen
-    environment:
-      - "affinity:container==*uploads*"
 networks:
   default:
     driver: overlay
