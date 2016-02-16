@@ -52,7 +52,7 @@ docker-compose up
 ``` powershell
 ./stacks/start-swarm.ps1
 docker build -t clamp/builder images
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v /c/Users/YourUserName/.docker/config.json:/root/.docker/config.json -v /usr/local/bin/docker:/usr/bin/docker --rm clamp/builder --bases --libs --runs --services --plugins --themes --cleanup --seq
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v /c/Users/YourUserName/.docker/config.json:/root/.docker/config.json --rm clamp/builder --bases --libs --runs --services --plugins --themes --cleanup --seq
 docker-compose up
 ```
 
@@ -84,7 +84,7 @@ docker-compose up
 
 ``` bash
 docker build -t clamp/builder images
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v ~/.docker/config.json:/root/.docker/config.json -v /usr/local/bin/docker:/usr/bin/docker --rm clamp/builder --bases --libs --runs --services --plugins --themes --cleanup --seq
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v ~/.docker/config.json:/root/.docker/config.json --rm clamp/builder --bases --libs --runs --services --plugins --themes --cleanup --seq
 docker-compose up
 ```
 
