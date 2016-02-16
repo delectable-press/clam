@@ -1,0 +1,2 @@
+consul-server:
+  scale: 5

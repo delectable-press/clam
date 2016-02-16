@@ -1,0 +1,19 @@
+build:
+  bases:
+    image: clamp/lib-base
+    pull: true
+    commands:
+      - images/build.all --bases
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - /var/lib:/var/lib:ro
+      - /bin:/bin:ro
+      - /lib:/lib:ro
+      - /lib64:/lib64:ro
+      - /sys:/sys:ro
+      - /usr:/usr:ro
+    environment:
+      - VERSION=0.2
+clone:
+  path: /build

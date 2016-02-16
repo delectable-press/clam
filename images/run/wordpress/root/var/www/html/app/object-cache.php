@@ -842,10 +842,10 @@ class WP_Object_Cache {
             $this->servers = array( array( '127.0.0.1', 11211 ) );
 
         if (!count($this->m->getServerList())) {
-            //$this->setOption(Memcached::OPT_BUFFER_WRITES, true);
+            $this->setOption(Memcached::OPT_BUFFER_WRITES, true);
             //$this->setOption(Memcached::OPT_BINARY_PROTOCOL, true);
             $this->setOption(Memcached::OPT_NO_BLOCK, true);
-            //$this->setOption(Memcached::OPT_TCP_NODELAY, true);
+            $this->setOption(Memcached::OPT_TCP_NODELAY, true);
             $this->setOption(Memcached::OPT_CONNECT_TIMEOUT, 150);
             //$this->setOption(Memcached::OPT_SEND_TIMEOUT, 10);
             //$this->setOption(Memcached::OPT_RECV_TIMEOUT, 10);

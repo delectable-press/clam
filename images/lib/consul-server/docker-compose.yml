@@ -1,0 +1,3 @@
+bootstrap:
+  image: clamp/lib-consul-server
+  command: /bootstrap.sh

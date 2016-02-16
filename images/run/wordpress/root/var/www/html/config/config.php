@@ -26,9 +26,8 @@ define('WP_CONTENT_URL', WP_HOME . CONTENT_DIR);
  * Memcached loader
  */
 $memcached_servers = array();
-while (!empty(getenv("MEMCACHED_" . (count($memcached_servers) + 1) . "_PORT_11211_TCP_ADDR"))) {
-    $server = getenv("MEMCACHED_" . (count($memcached_servers) + 1) . "_PORT_11211_TCP_ADDR");
-    array_push($memcached_servers, array($server, 11211));
+for($m = 0; $m < getenv("MEMCACHED_SERVERS"); $m++) {
+    array_push($memcached_servers, array("memcached_cluster_$m", 11211));
 }
 /**
  * DB settings -- not used (todo: remove them)
@@ -61,5 +60,5 @@ define('DISALLOW_FILE_EDIT', true);
  * Bootstrap WordPress
  */
 if (!defined('ABSPATH')) {
-    define('ABSPATH', $webroot_dir . '/wordpress/');
+    define('ABSPATH', "wordpress/$webroot_dir");
 }

@@ -1,0 +1,10 @@
+frontend:
+  image: 'clamp/run-haproxy:latest'
+  deployment_strategy: every_node
+  expose:
+    - '1936'
+  ports:
+    - '80:80'
+    - '443:443'
+  restart: always
+  sequential_deployment: true

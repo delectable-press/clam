@@ -1,1 +1,1 @@
-FROM clamp/lib-base
+FROM clamp/lib-volume

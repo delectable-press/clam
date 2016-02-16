@@ -1,7 +1,4 @@
-#!/usr/bin/env bash
-
-plugin="$1"
-others="$2"
+#!/usr/bin/with-contenv bash
 
 type=$(dirname $plugin)
 plugin=$(basename $plugin)
@@ -38,7 +35,7 @@ writeComposer $plugin $type
 composerInstall() {
 cd /plugin
 
-composer install
+composer install --prefer-dist
 
 version=$(composer show -i $2/$1 | grep versions)
 version="${version#*:}"
@@ -51,17 +48,17 @@ setBasePrefix() {
 
 case "$2" in
   "wpackagist-plugin")
-    base="clamp/lib-base"
+    base="clamp/lib-volume"
     prefix="plugin"
     path="/var/www/html/app/plugins/$1"
   ;;
   "wpackagist-muplugin")
-    base="clamp/lib-base"
+    base="clamp/lib-volume"
     prefix="muplugin"
     path="/var/www/html/app/mu-plugins/$1"
   ;;
   "wpackagist-theme")
-    base="clamp/lib-base"
+    base="clamp/lib-volume"
     prefix="theme"
     path="/var/www/html/app/themes/$1"
   ;;
@@ -75,8 +72,6 @@ cat > /plugin/$1/Dockerfile <<EOF
 FROM $2
 COPY ./$1 $3
 VOLUME $3
-
-ENTRYPOINT /bin/true
 EOF
 }
 writeDockerfile $plugin $base $path
@@ -84,7 +79,7 @@ writeDockerfile $plugin $base $path
 build() {
 
 fullname="$2-$1"
-docker build --pull -t clamp/$fullname:latest /plugin/$1
+docker build -t clamp/$fullname:latest /plugin/$1
 docker tag -f clamp/$fullname:latest clamp/$fullname:$version
 if [ "$PUSH" == "true" ]
 then
