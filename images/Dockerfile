@@ -2,8 +2,8 @@ FROM clamp/lib-base
 MAINTAINER Rob Landers <landers.robert@gmail.com>
 
 COPY . /build
-ENV VERSION 0.2.0
-LABEL version="0.2.0" description="Builds clamp"
+ENV VERSION 0.2.1
+LABEL version="0.2.1" description="Builds clamp"
 
 RUN apt-get update \
     && apt-get install -y apt-transport-https \
