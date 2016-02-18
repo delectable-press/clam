@@ -133,5 +133,7 @@ build:
       - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$${BRANCH///-}
     when:
       event: pull_request
-clone:
-  path: /build
+publish:
+  docker:
+    repo: clamp/lib-base
+    tag: $$BUILD_NUMBER
