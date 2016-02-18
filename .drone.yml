@@ -10,16 +10,12 @@ build:
     image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - VERSION: $$BUILD_NUMBER
     commands:
       - docker build -t clamp/lib-volume:$$BUILD_NUMBER images/lib/volume
   base-container:
     image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - VERSION: $$BUILD_NUMBER
     commands:
       - docker build -t clamp/lib-base:$$BUILD_NUMBER images/lib/base
   mysql-container:
