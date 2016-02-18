@@ -6,7 +6,7 @@ build:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/builder:0.2.0 images
+      - docker build -t clamp/builder:$$BUILD_NUMBER images
   volume-container:
     image: clamp/builder:0.2.0
     volumes:
