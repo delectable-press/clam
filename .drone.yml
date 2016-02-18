@@ -17,7 +17,7 @@ build:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/lib-base:$$BUILD_NUMBER images/lib/base
+      - docker build --build-arg BUILD_NUMBER=$$BUILD_NUMBER -t clamp/lib-base:$$BUILD_NUMBER images/lib/base
   mysql-container:
     image: clamp/builder:$$BUILD_NUMBER
     volumes:
