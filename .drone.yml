@@ -123,7 +123,6 @@ publish:
     password: $$DPASS
     email: $$DEMAIL
     repo: clamp/builder
-    tag: latest
-    file: images/Dockerfile
+    tag: $$BUILD_NUMBER
 clone:
   path: /build
