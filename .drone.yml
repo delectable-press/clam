@@ -133,9 +133,13 @@ build:
       - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$${BRANCH///-}
     when:
       event: pull_request
-publish:
-  docker:
-    repo: clamp/lib-base
-    tag: $$BUILD_NUMBER
-    environment:
-      - DOCKER_LAUNCH_DEBUG=true
+  push-tag:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/.docker/config.json:/root/.docker/config.json
+    commands:
+      - docker push clamp/lib-base:$$BUILD_NUMBER
+      - docker puhs clamp/lib-base:$${BRANCH///-}
+    when:
+      event: pull_request
