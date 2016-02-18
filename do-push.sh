@@ -33,6 +33,7 @@ waitall() { # PID...
         debug "$pid exited with zero exit status."
       else
         debug "$pid exited with non-zero exit status."
+        exit 1
         ((++errors))
       fi
     done
