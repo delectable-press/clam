@@ -20,8 +20,7 @@ build:
       - export BUILD_NUMBER=$$BUILD_NUMBER
       - BUILD_TYPE=lib
       - BUILD_NAME=base
-      - BUILD=images/$BUILD_TYPE/$BUILD_NAME
-      - cat $BUILD/Dockerfile
+      - export BUILD=images/$BUILD_TYPE/$BUILD_NAME
       - IMAGE=clamp/$BUILD_TYPE-$BUILD_NAME
       - $(cat $BUILD/Dockerfile | grep ENV | cut -d \  -f 2 | cut -d = -f 1 | xargs -L1 ./export.sh)
       - eval "echo \"$(<$BUILD/Dockerfile)\""
