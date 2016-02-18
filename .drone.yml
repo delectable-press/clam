@@ -1,12 +1,12 @@
 debug: true
 build:
-  volume-container:
+  vol-container:
     image: clamp/builder:0.2.0
     pull: true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/lib-volume:$$BUILD_NUMBER images/lib/volume
+      - ./templated-build.sh lib volume $$BUILD_NUMBER
   base-container:
     image: clamp/builder:0.2.0
     volumes:
