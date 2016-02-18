@@ -1,4 +1,4 @@
-FROM clamp/lib-base:latest
+FROM clamp/lib-base:$BUILD_NUMBER
 MAINTAINER Feng Honglin <hfeng@tutum.co>
 
 # Install pip and haproxy

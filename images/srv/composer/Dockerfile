@@ -1,4 +1,4 @@
-FROM clamp/lib-php-7
+FROM clamp/lib-php-7:$BUILD_NUMBER
 
 MAINTAINER Robert Landers <landers.robert@gmail.com>
 
@@ -12,8 +12,8 @@ RUN apt-get-install-min apt-transport-https \
     && apt-get clean \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-ENV plugin="" \
-    others=""
+ENV plugin=""
+ENV others=""
 
 COPY mkplugin.sh /etc/services.d/builder/run
 COPY stop.sh /etc/services.d/builder/finish

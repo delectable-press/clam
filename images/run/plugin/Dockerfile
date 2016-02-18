@@ -1,1 +1,1 @@
-FROM clamp/lib-volume
+FROM clamp/lib-volume:$BUILD_NUMBER
