@@ -122,20 +122,20 @@ build:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$$BRANCH
-      - docker tag clamp/lib-consul-server:$$BUILD_NUMBER clamp/lib-consul-server:$$BRANCH
-      - docker tag clamp/lib-mysql:$$BUILD_NUMBER clamp/lib-mysql:$$BRANCH
-      - docker tag clamp/lib-php-7:$$BUILD_NUMBER clamp/lib-php-7:$$BRANCH
-      - docker tag clamp/lib-volume:$$BUILD_NUMBER clamp/lib-volume:$$BRANCH
-      - docker tag clamp/run-haproxy:$$BUILD_NUMBER clamp/run-haproxy:$$BRANCH
-      - docker tag clamp/run-memcached:$$BUILD_NUMBER clamp/run-memcached:$$BRANCH
-      - docker tag clamp/run-mysql:$$BUILD_NUMBER clamp/run-mysql:$$BRANCH
-      - docker tag clamp/run-nginx:$$BUILD_NUMBER clamp/run-nginx:$$BRANCH
-      - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:$$BRANCH
-      - docker tag clamp/run-plugin:$$BUILD_NUMBER clamp/run-plugin:$$BRANCH
-      - docker tag clamp/run-wordpress:$$BUILD_NUMBER clamp/run-wordpress:$$BRANCH
-      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/run-composer:$$BRANCH
-      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$$BRANCH
+      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$${BRANCH/\//-}
+      - docker tag clamp/lib-consul-server:$$BUILD_NUMBER clamp/lib-consul-server:$${BRANCH/\//-}
+      - docker tag clamp/lib-mysql:$$BUILD_NUMBER clamp/lib-mysql:$${BRANCH/\//-}
+      - docker tag clamp/lib-php-7:$$BUILD_NUMBER clamp/lib-php-7:$${BRANCH/\//-}
+      - docker tag clamp/lib-volume:$$BUILD_NUMBER clamp/lib-volume:$${BRANCH/\//-}
+      - docker tag clamp/run-haproxy:$$BUILD_NUMBER clamp/run-haproxy:$${BRANCH/\//-}
+      - docker tag clamp/run-memcached:$$BUILD_NUMBER clamp/run-memcached:$${BRANCH/\//-}
+      - docker tag clamp/run-mysql:$$BUILD_NUMBER clamp/run-mysql:$${BRANCH/\//-}
+      - docker tag clamp/run-nginx:$$BUILD_NUMBER clamp/run-nginx:$${BRANCH/\//-}
+      - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:$${BRANCH/\//-}
+      - docker tag clamp/run-plugin:$$BUILD_NUMBER clamp/run-plugin:$${BRANCH/\//-}
+      - docker tag clamp/run-wordpress:$$BUILD_NUMBER clamp/run-wordpress:$${BRANCH/\//-}
+      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/run-composer:$${BRANCH/\//-}
+      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$${BRANCH/\//-}
     when:
       event: pull_request
 publish:
