@@ -46,14 +46,19 @@ waitall() { # PID...
 
 push clamp/lib-base
 push clamp/lib-consul-server
+waitall $pids
 push clamp/lib-mysql
 push clamp/lib-php-7
+waitall $pids
 push clamp/lib-volume
 push clamp/run-haproxy
+waitall $pids
 push clamp/run-memcached
 push clamp/run-mysql
+waitall $pids
 push clamp/run-nginx
 push clamp/run-php-fpm
+waitall $pids
 push clamp/run-plugin
 push clamp/run-wordpress
 push clamp/srv-composer
