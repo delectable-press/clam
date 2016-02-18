@@ -6,7 +6,7 @@ build:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - ./templated-build.sh lib volume $$BUILD_NUMBER
+      - docker build -t clamp/lib-volume:$$BUILD_NUMBER images/lib/volume
   base-container:
     image: clamp/builder:0.2.0
     volumes:
