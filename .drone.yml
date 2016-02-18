@@ -5,87 +5,87 @@ build:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/builder:$$BUILD_NUMBER images
+      - docker build -t clamp/builder:0.2.0 images
   volume-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - docker build -t clamp/lib-volume:$$BUILD_NUMBER images/lib/volume
   base-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh lib base $$BUILD_NUMBER
   mysql-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh lib mysql $$BUILD_NUMBER
   php-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh lib php-7 $$BUILD_NUMBER
   consul-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh lib consul-server $$BUILD_NUMBER
   mysql-run-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh run mysql $$BUILD_NUMBER
   plugin-run-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh run plugin $$BUILD_NUMBER
   wordpress-run-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh run wordpress $$BUILD_NUMBER
   memcached-run-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh run memcached $$BUILD_NUMBER
   nginx-run-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh run nginx $$BUILD_NUMBER
   php-fpm-run-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh run php-fpm $$BUILD_NUMBER
   haproxy-run-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh run haproxy $$BUILD_NUMBER
   plugin-builder-container:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh srv composer $$BUILD_NUMBER
   tag-release:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
@@ -118,7 +118,7 @@ build:
     when:
       event: tag
   tag-pr:
-    image: clamp/builder:$$BUILD_NUMBER
+    image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
