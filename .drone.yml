@@ -18,6 +18,18 @@ build:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - docker build -t clamp/lib-base:latest images/lib/base
+  mysql-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/lib-mysql:latest images/lib/mysql
+  volume-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/lib-php-7:latest images/lib/php-7
 publish:
   docker:
     username: $$DUSER
