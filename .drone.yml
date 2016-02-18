@@ -5,85 +5,118 @@ build:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/builder:latest images
+      - docker build -t clamp/builder:$$BUILD_NUMBER images
   volume-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/lib-volume:latest images/lib/volume
+      - docker build -t clamp/lib-volume:$$BUILD_NUMBER images/lib/volume
   volume-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/lib-base:latest images/lib/base
+      - docker build -t clamp/lib-base:$$BUILD_NUMBER images/lib/base
   mysql-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/lib-mysql:latest images/lib/mysql
+      - docker build -t clamp/lib-mysql:$$BUILD_NUMBER images/lib/mysql
   volume-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/lib-php-7:latest images/lib/php-7
+      - docker build -t clamp/lib-php-7:$$BUILD_NUMBER images/lib/php-7
   consul-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/lib-consul-server:latest images/lib/consul-server
+      - docker build -t clamp/lib-consul-server:$$BUILD_NUMBER images/lib/consul-server
   mysql-run-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/run-mysql:latest images/run/mysql
+      - docker build -t clamp/run-mysql:$$BUILD_NUMBER images/run/mysql
   plugin-run-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/run-plugin:latest images/run/plugin
+      - docker build -t clamp/run-plugin:$$BUILD_NUMBER images/run/plugin
   wordpress-run-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/run-wordpress:latest images/run/wordpress
+      - docker build -t clamp/run-wordpress:$$BUILD_NUMBER images/run/wordpress
   memcached-run-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/run-memcached:latest images/run/memcached
+      - docker build -t clamp/run-memcached:$$BUILD_NUMBER images/run/memcached
   nginx-run-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/run-nginx:latest images/run/nginx
+      - docker build -t clamp/run-nginx:$$BUILD_NUMBER images/run/nginx
   php-fpm-run-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/run-php-fpm:latest images/run/php-fpm
+      - docker build -t clamp/run-php-fpm:$$BUILD_NUMBER images/run/php-fpm
   haproxy-run-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/run-haproxy:latest images/run/haproxy
+      - docker build -t clamp/run-haproxy:$$BUILD_NUMBER images/run/haproxy
   plugin-builder-container:
-    image: clamp/builder:latest
+    image: clamp/builder:$$BUILD_NUMBER
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t clamp/srv-composer:latest images/srv/composer
+      - docker build -t clamp/srv-composer:$$BUILD_NUMBER images/srv/composer
+  tag-release:
+    image: clamp/builder:$$BUILD_NUMBER
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$$TAG
+      - docker tag clamp/lib-consul-server:$$BUILD_NUMBER clamp/lib-consul-server:$$TAG
+      - docker tag clamp/lib-mysql:$$BUILD_NUMBER clamp/lib-mysql:$$TAG
+      - docker tag clamp/lib-php-7:$$BUILD_NUMBER clamp/lib-php-7:$$TAG
+      - docker tag clamp/lib-volume:$$BUILD_NUMBER clamp/lib-volume:$$TAG
+      - docker tag clamp/run-haproxy:$$BUILD_NUMBER clamp/run-haproxy:$$TAG
+      - docker tag clamp/run-memcached:$$BUILD_NUMBER clamp/run-memcached:$$TAG
+      - docker tag clamp/run-mysql:$$BUILD_NUMBER clamp/run-mysql:$$TAG
+      - docker tag clamp/run-nginx:$$BUILD_NUMBER clamp/run-nginx:$$TAG
+      - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:$$TAG
+      - docker tag clamp/run-plugin:$$BUILD_NUMBER clamp/run-plugin:$$TAG
+      - docker tag clamp/run-wordpress:$$BUILD_NUMBER clamp/run-wordpress:$$TAG
+      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/run-composer:$$TAG
+      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$$TAG
+      - docker tag clamp/lib-consul-server:$$BUILD_NUMBER clamp/lib-consul-server:latest
+      - docker tag clamp/lib-mysql:$$BUILD_NUMBER clamp/lib-mysql:latest
+      - docker tag clamp/lib-php-7:$$BUILD_NUMBER clamp/lib-php-7:latest
+      - docker tag clamp/lib-volume:$$BUILD_NUMBER clamp/lib-volume:latest
+      - docker tag clamp/run-haproxy:$$BUILD_NUMBER clamp/run-haproxy:latest
+      - docker tag clamp/run-memcached:$$BUILD_NUMBER clamp/run-memcached:latest
+      - docker tag clamp/run-mysql:$$BUILD_NUMBER clamp/run-mysql:latest
+      - docker tag clamp/run-nginx:$$BUILD_NUMBER clamp/run-nginx:latest
+      - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:latest
+      - docker tag clamp/run-plugin:$$BUILD_NUMBER clamp/run-plugin:latest
+      - docker tag clamp/run-wordpress:$$BUILD_NUMBER clamp/run-wordpress:latest
+      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/run-composer:latest
+    when:
+      event: tag
 publish:
   docker:
     username: $$DUSER
