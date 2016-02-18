@@ -26,7 +26,7 @@ define('WP_CONTENT_URL', WP_HOME . CONTENT_DIR);
  * Memcached loader
  */
 $memcached_servers = array();
-for($m = 0; $m < getenv("MEMCACHED_SERVERS"); $m++) {
+for($m = 1; $m <= getenv("MEMCACHED_SERVERS"); $m++) {
     array_push($memcached_servers, array("memcached_cluster_$m", 11211));
 }
 /**
