@@ -23,7 +23,7 @@ build:
       - BUILD=images/$BUILD_TYPE/$BUILD_NAME
       - IMAGE=clamp/$BUILD_TYPE-$BUILD_NAME
       - $(cat $BUILD/Dockerfile | grep ENV | cut -d \  -f 2 | cut -d = -f 1 | xargs -L1 ./export.sh)
-      - BUILD=$BUILD eval "echo \"$(<$BUILD/Dockerfile)\""
+      - BUILD=$BUILD eval "echo \"$(<images/lib/base/Dockerfile)\""
       - docker build -t $IMAGE:$$BUILD_NUMBER $BUILD
   mysql-container:
     image: clamp/builder:$$BUILD_NUMBER
