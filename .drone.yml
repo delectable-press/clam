@@ -124,5 +124,7 @@ publish:
     email: $$DEMAIL
     repo: clamp/builder
     tag: $$BUILD_NUMBER
+    when:
+      event: [pull_request]
 clone:
   path: /build
