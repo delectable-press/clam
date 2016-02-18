@@ -122,7 +122,7 @@ build:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$${BRANCH/\\//-}
+      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$${BRANCH///-}
       - docker tag clamp/lib-consul-server:$$BUILD_NUMBER clamp/lib-consul-server:$${BRANCH/\//-}
       - docker tag clamp/lib-mysql:$$BUILD_NUMBER clamp/lib-mysql:$${BRANCH/\//-}
       - docker tag clamp/lib-php-7:$$BUILD_NUMBER clamp/lib-php-7:$${BRANCH/\//-}
