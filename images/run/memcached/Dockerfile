@@ -9,9 +9,9 @@ RUN groupadd -r memcache \
 
 ENV MEMCACHED_VERSION=1.4.24
 ENV MEMCACHED_SHA1=32a798a37ef782da10a09d74aa1e5be91f2861db
+ENV buildDeps='curl gcc libc6-dev libevent-dev make perl'
 
-RUN buildDeps='curl gcc libc6-dev libevent-dev make perl' \
-    && set -x \
+RUN set -x \
     && apt-get update \
     && apt-get-install-min $buildDeps \
     && curl -SL "http://memcached.org/files/memcached-$MEMCACHED_VERSION.tar.gz" -o memcached.tar.gz \
