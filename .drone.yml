@@ -1,12 +1,4 @@
 build:
-  cleanup:
-    image: spotify/docker-gc
-    pull: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /etc:/etc
-    environment:
-      FORCE_IMAGE_REMOVAL: 1
   builder:
     image: clamp/builder:0.2.0
     pull: true
