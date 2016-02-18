@@ -112,6 +112,16 @@ build:
       - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/run-composer:latest
     when:
       event: tag
+  push-tag:
+    image: clamp/builder:0.2.0
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /root/.docker/config.json:/root/.docker/config.json
+      commands:
+        - ./do-push.sh $$BUILD_NUMBER latest
+        - ./do-push.sh $$TAG
+      when:
+        event: tag
   tag-pr:
     image: clamp/builder:0.2.0
     volumes:
@@ -129,17 +139,15 @@ build:
       - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:$${BRANCH///-}
       - docker tag clamp/run-plugin:$$BUILD_NUMBER clamp/run-plugin:$${BRANCH///-}
       - docker tag clamp/run-wordpress:$$BUILD_NUMBER clamp/run-wordpress:$${BRANCH///-}
-      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/run-composer:$${BRANCH///-}
-      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$${BRANCH///-}
+      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/srv-composer:$${BRANCH///-}
     when:
       event: pull_request
-  push-tag:
+  push-pr:
     image: clamp/builder:0.2.0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /root/.docker/config.json:/root/.docker/config.json
     commands:
-      - docker push clamp/lib-base:$$BUILD_NUMBER
-      - docker puhs clamp/lib-base:$${BRANCH///-}
+      - ./do-push.sh $$BUILD_NUMBER $${BRANCH///-}
     when:
       event: pull_request
