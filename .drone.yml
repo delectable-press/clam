@@ -1,19 +1,134 @@
+debug: true
 build:
-  bases:
-    image: clamp/lib-base
+  vol-container:
+    image: clamp/builder:0.2.0
     pull: true
-    commands:
-      - images/build.all --bases
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker
-      - /var/lib:/var/lib:ro
-      - /bin:/bin:ro
-      - /lib:/lib:ro
-      - /lib64:/lib64:ro
-      - /sys:/sys:ro
-      - /usr:/usr:ro
-    environment:
-      - VERSION=0.2
-clone:
-  path: /build
+    commands:
+      - docker build -t clamp/lib-volume:$$BUILD_NUMBER images/lib/volume
+  base-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh lib base $$BUILD_NUMBER
+  mysql-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh lib mysql $$BUILD_NUMBER
+  php-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh lib php-7 $$BUILD_NUMBER
+  consul-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh lib consul-server $$BUILD_NUMBER
+  mysql-run-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh run mysql $$BUILD_NUMBER
+  plugin-run-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh run plugin $$BUILD_NUMBER
+  wordpress-run-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh run wordpress $$BUILD_NUMBER
+  memcached-run-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh run memcached $$BUILD_NUMBER
+  nginx-run-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh run nginx $$BUILD_NUMBER
+  php-fpm-run-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh run php-fpm $$BUILD_NUMBER
+  haproxy-run-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh run haproxy $$BUILD_NUMBER
+  plugin-builder-container:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - ./templated-build.sh srv composer $$BUILD_NUMBER
+  tag-release:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$$TAG
+      - docker tag clamp/lib-consul-server:$$BUILD_NUMBER clamp/lib-consul-server:$$TAG
+      - docker tag clamp/lib-mysql:$$BUILD_NUMBER clamp/lib-mysql:$$TAG
+      - docker tag clamp/lib-php-7:$$BUILD_NUMBER clamp/lib-php-7:$$TAG
+      - docker tag clamp/lib-volume:$$BUILD_NUMBER clamp/lib-volume:$$TAG
+      - docker tag clamp/run-haproxy:$$BUILD_NUMBER clamp/run-haproxy:$$TAG
+      - docker tag clamp/run-memcached:$$BUILD_NUMBER clamp/run-memcached:$$TAG
+      - docker tag clamp/run-mysql:$$BUILD_NUMBER clamp/run-mysql:$$TAG
+      - docker tag clamp/run-nginx:$$BUILD_NUMBER clamp/run-nginx:$$TAG
+      - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:$$TAG
+      - docker tag clamp/run-plugin:$$BUILD_NUMBER clamp/run-plugin:$$TAG
+      - docker tag clamp/run-wordpress:$$BUILD_NUMBER clamp/run-wordpress:$$TAG
+      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/run-composer:$$TAG
+      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$$TAG
+      - docker tag clamp/lib-consul-server:$$BUILD_NUMBER clamp/lib-consul-server:latest
+      - docker tag clamp/lib-mysql:$$BUILD_NUMBER clamp/lib-mysql:latest
+      - docker tag clamp/lib-php-7:$$BUILD_NUMBER clamp/lib-php-7:latest
+      - docker tag clamp/lib-volume:$$BUILD_NUMBER clamp/lib-volume:latest
+      - docker tag clamp/run-haproxy:$$BUILD_NUMBER clamp/run-haproxy:latest
+      - docker tag clamp/run-memcached:$$BUILD_NUMBER clamp/run-memcached:latest
+      - docker tag clamp/run-mysql:$$BUILD_NUMBER clamp/run-mysql:latest
+      - docker tag clamp/run-nginx:$$BUILD_NUMBER clamp/run-nginx:latest
+      - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:latest
+      - docker tag clamp/run-plugin:$$BUILD_NUMBER clamp/run-plugin:latest
+      - docker tag clamp/run-wordpress:$$BUILD_NUMBER clamp/run-wordpress:latest
+      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/run-composer:latest
+    when:
+      event: tag
+  tag-pr:
+    image: clamp/builder:0.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:$${BRANCH///-}
+      - docker tag clamp/lib-consul-server:$$BUILD_NUMBER clamp/lib-consul-server:$${BRANCH///-}
+      - docker tag clamp/lib-mysql:$$BUILD_NUMBER clamp/lib-mysql:$${BRANCH///-}
+      - docker tag clamp/lib-php-7:$$BUILD_NUMBER clamp/lib-php-7:$${BRANCH///-}
+      - docker tag clamp/lib-volume:$$BUILD_NUMBER clamp/lib-volume:$${BRANCH///-}
+      - docker tag clamp/run-haproxy:$$BUILD_NUMBER clamp/run-haproxy:$${BRANCH///-}
+      - docker tag clamp/run-memcached:$$BUILD_NUMBER clamp/run-memcached:$${BRANCH///-}
+      - docker tag clamp/run-mysql:$$BUILD_NUMBER clamp/run-mysql:$${BRANCH///-}
+      - docker tag clamp/run-nginx:$$BUILD_NUMBER clamp/run-nginx:$${BRANCH///-}
+      - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:$${BRANCH///-}
+      - docker tag clamp/run-plugin:$$BUILD_NUMBER clamp/run-plugin:$${BRANCH///-}
+      - docker tag clamp/run-wordpress:$$BUILD_NUMBER clamp/run-wordpress:$${BRANCH///-}
+      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/srv-composer:$${BRANCH///-}
+    when:
+      event: pull_request

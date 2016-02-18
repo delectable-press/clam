@@ -1,4 +1,4 @@
-FROM clamp/lib-base
+FROM clamp/lib-base:$BUILD_NUMBER
 MAINTAINER Rob Landers <landers.robert@gmail.com>
 
 RUN echo \

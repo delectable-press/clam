@@ -1,4 +1,4 @@
-FROM clamp/lib-base:latest
+FROM clamp/lib-base:$BUILD_NUMBER
 MAINTAINER Fernando Mayo <fernando@tutum.co>, Feng Honglin <hfeng@tutum.co>
 
 # Add MySQL configuration

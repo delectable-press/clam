@@ -1,4 +1,4 @@
-FROM clamp/lib-php-7
+FROM clamp/lib-php-7:$BUILD_NUMBER
 MAINTAINER Rob Landers <landers.robert@gmail.com>
 
 RUN apt-get-install-min php-fpm \

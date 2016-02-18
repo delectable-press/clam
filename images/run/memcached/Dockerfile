@@ -1,4 +1,4 @@
-FROM clamp/lib-base
+FROM clamp/lib-base:$BUILD_NUMBER
 MAINTAINER Rob Landers <rlanders@boomtownroi.com>
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
@@ -7,11 +7,12 @@ RUN groupadd -r memcache \
     && apt-get-install-min \
     libevent-2.0-5
 
-ENV MEMCACHED_VERSION 1.4.24
-ENV MEMCACHED_SHA1 32a798a37ef782da10a09d74aa1e5be91f2861db
+ENV MEMCACHED_VERSION=1.4.24
+ENV MEMCACHED_SHA1=32a798a37ef782da10a09d74aa1e5be91f2861db
+ENV buildDeps='curl gcc libc6-dev libevent-dev make perl'
 
-RUN buildDeps='curl gcc libc6-dev libevent-dev make perl' \
-    && set -x \
+RUN set -x \
+    && apt-get update \
     && apt-get-install-min $buildDeps \
     && curl -SL "http://memcached.org/files/memcached-$MEMCACHED_VERSION.tar.gz" -o memcached.tar.gz \
     && echo "$MEMCACHED_SHA1 memcached.tar.gz" | sha1sum -c - \
@@ -25,7 +26,15 @@ RUN buildDeps='curl gcc libc6-dev libevent-dev make perl' \
     && cd / && rm -rf /usr/src/memcached \
     && apt-get purge -y --auto-remove $buildDeps
 
-ENV MAX_CONN=1024 MAX_REQ=20 FACTOR=1.25 KEY_SIZE=48 THREADS=4 PROTOCOL=auto SLAB=1m SIZE=64 DELIMETER=":"
+ENV MAX_CONN=1024
+ENV MAX_REQ=20
+ENV FACTOR=1.25
+ENV KEY_SIZE=48
+ENV THREADS=4
+ENV PROTOCOL=auto
+ENV SLAB=1m
+ENV SIZE=64
+ENV DELIMETER=":"
 
 COPY ./run.sh /etc/services.d/memcached/run
 

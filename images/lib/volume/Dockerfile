@@ -29,7 +29,7 @@ RUN if [ ! -e /etc/dpkg/dpkg.cfg.d/docker-apt-speedup ]; then         \
 # prevent initramfs updates from trying to run grub and lilo.
 # https://journal.paul.querna.org/articles/2013/10/15/docker-ubuntu-on-rackspace/
 # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=594189
-ENV INITRD no
+ENV INITRD=no
 
 # enable Ubuntu Universe and Multiverse.
 RUN sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list   && \
@@ -58,8 +58,8 @@ RUN apt-get-install-min software-properties-common
 RUN apt-get-min dist-upgrade -y --no-install-recommends
 
 # fix locale.
-ENV LANG en_US.UTF-8
-ENV LC_CTYPE en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LC_CTYPE=en_US.UTF-8
 RUN apt-get-install-min language-pack-en        && \
     locale-gen en_US                            && \
     update-locale LANG=$LANG LC_CTYPE=$LC_CTYPE

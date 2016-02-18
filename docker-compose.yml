@@ -45,7 +45,7 @@ services:
       - wordpress:ro
       - uploads:rw
     links:
-      - php-proxy
+      - php-proxy:php-fpm-lb
     ports:
       - "80:80"
   memcached:
