@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "export $1=\$${1}"
+echo "export $1=\${${1}}"
