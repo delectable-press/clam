@@ -1,12 +1,10 @@
-build:
-  bases:
-    image: clamp/lib-base
-    pull: true
-    commands:
-      - images/build.all --bases
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - VERSION=0.2
+publish:
+  docker:
+    username: $$DUSER
+    password: $$DPASS
+    email: $$DEMAIL
+    repo: clamp/builder
+    tag: latest
+    file: images/Dockerfile
 clone:
   path: /build
