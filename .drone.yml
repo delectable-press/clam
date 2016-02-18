@@ -114,14 +114,14 @@ build:
       event: tag
   push-tag:
     image: clamp/builder:0.2.0
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-        - /root/.docker/config.json:/root/.docker/config.json
-      commands:
-        - ./do-push.sh $$BUILD_NUMBER latest
-        - ./do-push.sh $$TAG
-      when:
-        event: tag
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/.docker/config.json:/root/.docker/config.json
+    commands:
+      - ./do-push.sh $$BUILD_NUMBER latest
+      - ./do-push.sh $$TAG
+    when:
+      event: tag
   tag-pr:
     image: clamp/builder:0.2.0
     volumes:
