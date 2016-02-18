@@ -6,6 +6,12 @@ build:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - docker build -t clamp/builder:latest images
+  volume-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/lib-volume:latest images/lib/volume
 publish:
   docker:
     username: $$DUSER
