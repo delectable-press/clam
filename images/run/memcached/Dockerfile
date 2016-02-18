@@ -12,6 +12,7 @@ ENV MEMCACHED_SHA1 32a798a37ef782da10a09d74aa1e5be91f2861db
 
 RUN buildDeps='curl gcc libc6-dev libevent-dev make perl' \
     && set -x \
+    && apt-get update \
     && apt-get-install-min $buildDeps \
     && curl -SL "http://memcached.org/files/memcached-$MEMCACHED_VERSION.tar.gz" -o memcached.tar.gz \
     && echo "$MEMCACHED_SHA1 memcached.tar.gz" | sha1sum -c - \
