@@ -45,7 +45,7 @@ waitall() { # PID...
 }
 
 push clamp/lib-base
-push clamp/lib-consul-server:$$BUILD_NUMBER
+push clamp/lib-consul-server
 push clamp/lib-mysql
 push clamp/lib-php-7
 push clamp/lib-volume
