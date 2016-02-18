@@ -1,3 +1,4 @@
+debug: true
 build:
   builder:
     image: clamp/builder:0.2.0
