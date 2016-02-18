@@ -17,8 +17,14 @@ build:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - BUILD_NUMBER=$$BUILD_NUMBER eval "echo \"$(<images/lib/base/Dockerfile)\"" 1>images/lib/base/Dockerfile
-      - docker build -t clamp/lib-base:$$BUILD_NUMBER images/lib/base
+      - export BUILD_NUMBER=$$BUILD_NUMBER
+      - BUILD_TYPE=lib
+      - BUILD_NAME=base
+      - BUILD=images/$BUILD_TYPE/$BUILD_NAME
+      - IMAGE=clamp/$BUILD_TYPE-$BUILD_NAME
+      - $(cat images/lib/base/Dockerfile | grep ENV | cut -d \  -f 2 | cut -d = -f 1 | xargs -L1 ./export.sh)
+      - BUILD_NUMBER=$$BUILD_NUMBER eval "echo \"$(<$BUILD/Dockerfile)\"" 1>$BUILD/Dockerfile
+      - docker build -t $IMAGE:$$BUILD_NUMBER $BUILD
   mysql-container:
     image: clamp/builder:$$BUILD_NUMBER
     volumes:
