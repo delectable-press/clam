@@ -137,3 +137,5 @@ publish:
   docker:
     repo: clamp/lib-base
     tag: $$BUILD_NUMBER
+    environment:
+      - DOCKER_LAUNCH_DEBUG=true
