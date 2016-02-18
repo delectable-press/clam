@@ -1,5 +1,7 @@
 # A truly dockerized WordPress
 
+[![Build Status](http://home.withinboredom.info:8090/api/badges/clam-p/clam/status.svg)](http://home.withinboredom.info:8090/clam-p/clam)
+
 The goal is to make wordpress hyper-scalable for production use in Docker. There's still work to do; please feel free
 to contribute in any way by opening an issue or a PR.
 
