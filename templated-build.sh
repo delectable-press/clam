@@ -14,5 +14,6 @@ BUILD_NAME=$2
 BUILD=images/$BUILD_TYPE/$BUILD_NAME
 IMAGE=clamp/$BUILD_TYPE-$BUILD_NAME
 $(cat $BUILD/Dockerfile | grep ENV | cut -d \  -f 2 | cut -d = -f 1 | xargs -L1 ./export.sh)
-apply_shell_expansion $BUILD/Dockerfile > $BUILD/Dockerfile
+apply_shell_expansion $BUILD/Dockerfile > $BUILD/Dockerfile-store
+mv $BUILD/Dockerfile-store $BUILD/Dockerfile
 docker build -t $IMAGE:$$BUILD_NUMBER $BUILD
