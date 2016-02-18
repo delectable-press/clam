@@ -132,3 +132,6 @@ build:
       - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/srv-composer:$${BRANCH///-}
     when:
       event: pull_request
+branches:
+  - master
+  - develop
