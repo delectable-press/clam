@@ -54,6 +54,36 @@ build:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - docker build -t clamp/run-wordpress:latest images/run/wordpress
+  memcached-run-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/run-memcached:latest images/run/memcached
+  nginx-run-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/run-nginx:latest images/run/nginx
+  php-fpm-run-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/run-php-fpm:latest images/run/php-fpm
+  haproxy-run-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/run-haproxy:latest images/run/haproxy
+  plugin-builder-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/srv-composer:latest images/srv/composer
 publish:
   docker:
     username: $$DUSER
