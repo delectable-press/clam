@@ -30,6 +30,30 @@ build:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - docker build -t clamp/lib-php-7:latest images/lib/php-7
+  consul-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/lib-consul-server:latest images/lib/consul-server
+  mysql-run-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/run-mysql:latest images/run/mysql
+  plugin-run-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/run-plugin:latest images/run/plugin
+  wordpress-run-container:
+    image: clamp/builder:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker build -t clamp/run-wordpress:latest images/run/wordpress
 publish:
   docker:
     username: $$DUSER
