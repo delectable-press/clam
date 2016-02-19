@@ -1,9 +1,8 @@
 FROM clamp/lib-base:$BUILD_NUMBER
 
-RUN apt-get-install-min jq curl
+RUN apk add --no-cache jq curl
 
 COPY root /
 
-RUN groupadd -r consul \
-    && useradd -r -g consul consul \
+RUN adduser -S consul \
     && chmod +x /*.sh

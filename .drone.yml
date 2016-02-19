@@ -49,12 +49,6 @@ build:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - ./templated-build.sh run wordpress $$BUILD_NUMBER
-  memcached-run-container:
-    image: clamp/builder:0.2.0
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    commands:
-      - ./templated-build.sh run memcached $$BUILD_NUMBER
   nginx-run-container:
     image: clamp/builder:0.2.0
     volumes:

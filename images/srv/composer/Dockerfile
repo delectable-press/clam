@@ -1,4 +1,4 @@
-FROM clamp/lib-php-7:$BUILD_NUMBER
+FROM clamp/lib-php-7:0.2.0
 
 MAINTAINER Robert Landers <landers.robert@gmail.com>
 

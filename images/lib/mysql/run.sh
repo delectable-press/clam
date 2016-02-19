@@ -5,7 +5,7 @@ set -e
 
 VOLUME_HOME="/var/lib/mysql"
 CONF_FILE="/etc/mysql/conf.d/my.cnf"
-LOG="/var/log/mysql/error.log"
+LOG="/var/lib/mysql/*.err"
 
 # Set permission of config file
 chmod 644 ${CONF_FILE}
@@ -90,7 +90,8 @@ if [[ ! -d $VOLUME_HOME/mysql ]]; then
     if [ ! -f /usr/share/mysql/my-default.cnf ] ; then
         cp /etc/mysql/my.cnf /usr/share/mysql/my-default.cnf
     fi
-    mysql_install_db || exit 1
+    chown -R mysql:mysql /var/lib/mysql
+    mysql_install_db --user=mysql  || exit 1
     touch /var/lib/mysql/.EMPTY_DB
     echo "=> Done!"
 else
