@@ -1,13 +1,15 @@
 <?php
 /*
-Plugin Name: Memcached Redux
-Description: The real Memcached (not Memcache) backend for the WP Object Cache.
-Version: 0.1.1
-Plugin URI: http://wordpress.org/extend/plugins/memcached/
-Author: Scott Taylor - uses code from Ryan Boren, Denis de Bernardy, Matt Martz
+Plugin Name: RethinkDb
+Description: A Rethought object cache
+Version: 0.0.1
+Plugin URI:
+Author: Rob Landers
 
 Install this file to wp-content/object-cache.php
 */
+
+require_once 'mu-plugins/rethinkdb-object-cache/lib/rethinkdb/rdb/rdb.php';
 
 /**
  * Adds a value to cache.
@@ -776,6 +778,11 @@ class WP_Object_Cache {
      */
     public $m;
 
+    public $r;
+
+    public $dbName;
+    public $tableName;
+
     /**
      * Hold the Memcached server details.
      *
@@ -828,31 +835,14 @@ class WP_Object_Cache {
      *
      * @param   null    $persistent_id      To create an instance that persists between requests, use persistent_id to specify a unique ID for the instance.
      */
-    public function __construct( $persistent_id = NULL ) {
-        global $memcached_servers, $blog_id, $table_prefix;
+    public function __construct( $persistent_id = null ) {
+        global $rethink_servers, $blog_id, $table_prefix;
 
-        if ( is_null( $persistent_id ) || ! is_string( $persistent_id ) )
-            $this->m = new Memcached();
-        else
-            $this->m = new Memcached( $persistent_id );
+        $this->r = r\connect($rethink_servers[0]);
+        $this->dbName = 'cache';
+        $this->tableName = 'objectstore';
 
-        if ( isset( $memcached_servers ) )
-            $this->servers = $memcached_servers;
-        else
-            $this->servers = array( array( '127.0.0.1', 11211 ) );
-
-        if (!count($this->m->getServerList())) {
-            $this->setOption(Memcached::OPT_BUFFER_WRITES, true);
-            //$this->setOption(Memcached::OPT_BINARY_PROTOCOL, true);
-            $this->setOption(Memcached::OPT_NO_BLOCK, true);
-            $this->setOption(Memcached::OPT_TCP_NODELAY, true);
-            $this->setOption(Memcached::OPT_CONNECT_TIMEOUT, 150);
-            //$this->setOption(Memcached::OPT_SEND_TIMEOUT, 10);
-            //$this->setOption(Memcached::OPT_RECV_TIMEOUT, 10);
-            //$this->setOption(Memcached::OPT_CACHE_LOOKUPS, true);
-            $this->setOption(Memcached::OPT_DISTRIBUTION, Memcached::DISTRIBUTION_CONSISTENT);
-            $this->addServers( $this->servers );
-        }
+        $this->createBobbyTables();
 
         /**
          * This approach is borrowed from Sivel and Boren. Use the salt for easy cache invalidation and for
@@ -870,6 +860,23 @@ class WP_Object_Cache {
         // Setup cacheable values for handling expiration times
         $this->thirty_days = 60 * 60 * 24 * 30;
         $this->now         = time();
+    }
+
+    private function createBobbyTables() {
+        try {
+            // db doesn't exist, let's create it
+            r\dbCreate($this->dbName)->run($this->r);
+        } catch (Exception $e) {
+            // db already exists, continue on
+        }
+
+        try {
+            $tables = r\db($this->dbName)->tableCreate($this->tableName, array('durability' => 'soft'))->run($this->r);
+        } catch (Exception $e) {
+            // table already exists, continue on
+        }
+
+        $this->r->useDb($this->dbName);
     }
 
     /**
@@ -915,16 +922,27 @@ class WP_Object_Cache {
         }
 
         // Save to Memcached
-        if ( $byKey )
-            $result = $this->m->addByKey( $server_key, $derived_key, $value, $expiration );
-        else
-            $result = $this->m->add( $derived_key, $value, $expiration );
+        if ( $byKey ) {
+            $result = r\table($this->tableName)->insert(array(
+                'id' => $derived_key,
+                'value' => $value,
+                'expires' => $expiration,
+                'is_object' => is_object($value)
+            ))->run($this->r);
+        }
+        else {
+            $result = r\table($this->tableName)->insert(array(
+                'id' => $derived_key,
+                'value' => $value,
+                'expires' => $expiration,
+                'is_object' => is_object($value)
+            ))->run($this->r);
+        }
 
         // Store in runtime cache if add was successful
-        if ( Memcached::RES_SUCCESS === $this->getResultCode() )
-            $this->add_to_internal_cache( $derived_key, $value );
+        $this->add_to_internal_cache( $derived_key, $value );
 
-        return $result;
+        return is_object($result);
     }
 
     /**
@@ -1021,15 +1039,13 @@ class WP_Object_Cache {
 
         // Append to Memcached value
         if ( $byKey )
-            $result = $this->m->appendByKey( $server_key, $derived_key, $value );
+            $result = r\table($this->tableName)->get($derived_key)->getField('value')->append($value)->run($this->r);
         else
-            $result = $this->m->append( $derived_key, $value );
+            $result = r\table($this->tableName)->get($derived_key)->getField('value')->append($value)->run($this->r);
 
         // Store in runtime cache if add was successful
-        if ( Memcached::RES_SUCCESS === $this->getResultCode() ) {
-            $combined = $this->combine_values( $this->cache[$derived_key], $value, 'app' );
-            $this->add_to_internal_cache( $derived_key, $combined );
-        }
+        $combined = $this->combine_values( $this->cache[$derived_key], $value, 'app' );
+        $this->add_to_internal_cache( $derived_key, $combined );
 
         return $result;
     }
@@ -1207,11 +1223,11 @@ class WP_Object_Cache {
         }
 
         if ( $byKey )
-            $result = $this->m->deleteByKey( $server_key, $derived_key, $time );
+            $result = r\table($this->tableName)->get($derived_key)->delete()->run($this->r);
         else
-            $result = $this->m->delete( $derived_key, $time );
+            $result = r\table($this->tableName)->get($derived_key)->delete()->run($this->r);
 
-        if ( Memcached::RES_SUCCESS === $this->getResultCode() )
+        if ( $result->deleted > 0 )
             unset( $this->cache[$derived_key] );
 
         return $result;
@@ -1268,13 +1284,16 @@ class WP_Object_Cache {
      * @return  bool                Returns TRUE on success or FALSE on failure.
      */
     public function flush( $delay = 0 ) {
-        $result = $this->m->flush( $delay );
+        try {
+            r\tableDrop($this->tableName)->run($this->r);
+            $this->createBobbyTables();
+        }
+        catch (Exception $e) {
+            // well, we tried...
+            return false;
+        }
 
-        // Only reset the runtime cache if memcached was properly flushed
-        if ( Memcached::RES_SUCCESS === $this->getResultCode() )
-            $this->cache = array();
-
-        return $result;
+        return true;
     }
 
     /**
@@ -1317,21 +1336,36 @@ class WP_Object_Cache {
         } else {
             if ( isset( $this->cache[$derived_key] ) ) {
                 $found = true;
-                return is_object( $this->cache[$derived_key] ) ? clone $this->cache[$derived_key] : $this->cache[$derived_key];
+                return is_object( $this->cache[$derived_key] ) ?
+                    clone $this->cache[$derived_key] :
+                    $this->cache[$derived_key];
             } elseif ( in_array( $group, $this->no_mc_groups ) ) {
                 return false;
             } else {
                 if ( $byKey )
-                    $value = $this->m->getByKey( $server_key, $derived_key );
+                    $value = r\table($this->tableName)->get($derived_key)->run($this->r);
                 else
-                    $value = $this->m->get( $derived_key );
+                    $value = r\table($this->tableName)->get($derived_key)->run($this->r);
                 $getCount++;
             }
         }
 
-        if ( Memcached::RES_SUCCESS === $this->getResultCode() ) {
+        if ( $value != null ) {
+            if ($value['is_object']) {
+                $value = $value['value'];
+                $value->setFlags(ArrayObject::ARRAY_AS_PROPS);
+            }
+            else {
+                $value = $value['value'];
+                if (is_object($value)) {
+                    $value = $value->getArrayCopy();
+                }
+            }
             $this->add_to_internal_cache( $derived_key, $value );
             $found = true;
+        }
+        else {
+            $value = false;
         }
 
         return is_object( $value ) ? clone $value : $value;
@@ -1802,16 +1836,25 @@ class WP_Object_Cache {
 
         // Save to Memcached
         if ( $byKey ) {
-            $result = $this->m->setByKey( $server_key, $derived_key, $value, $expiration );
+            $result = r\table($this->tableName)->insert(array(
+                'id' => $derived_key,
+                'value' => $value,
+                'expiration' => $expiration,
+                'is_object' => is_object($value)
+            ), array('conflict' => 'replace'))->run($this->r);
         } else {
-            $result = $this->m->set( $derived_key, $value, $expiration );
+            $result = r\table($this->tableName)->insert(array(
+                'id' => $derived_key,
+                'value' => $value,
+                'expiration' => $expiration,
+                'is_object' => is_object($value)
+            ), array('conflict' => 'replace'))->run($this->r);
         }
 
         // Store in runtime cache if add was successful
-        if ( Memcached::RES_SUCCESS === $this->getResultCode() )
-            $this->add_to_internal_cache( $derived_key, $value );
+        $this->add_to_internal_cache( $derived_key, $value );
 
-        return $result;
+        return is_object($result);
     }
 
     /**
