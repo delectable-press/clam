@@ -1,4 +1,4 @@
-FROM clamp/lib-base:latest
+FROM clamp/lib-base:$BUILD_NUMBER
 
 RUN apt-get-install-min jq curl
 
