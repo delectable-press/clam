@@ -144,6 +144,19 @@ build:
       - docker push clamp/run-plugin:latest
       - docker push clamp/run-wordpress:latest
       - docker push clamp/srv-composer:latest
+      - docker push clamp/lib-base:$$TAG
+      - docker push clamp/lib-consul-server:$$TAG
+      - docker push clamp/lib-mysql:$$TAG
+      - docker push clamp/lib-php-7:$$TAG
+      - docker push clamp/lib-volume:$$TAG
+      - docker push clamp/run-haproxy:$$TAG
+      - docker push clamp/run-memcached:$$TAG
+      - docker push clamp/run-mysql:$$TAG
+      - docker push clamp/run-nginx:$$TAG
+      - docker push clamp/run-php-fpm:$$TAG
+      - docker push clamp/run-plugin:$$TAG
+      - docker push clamp/run-wordpress:$$TAG
+      - docker push clamp/srv-composer:$$TAG
     when:
       event: tag
   tag-pr:
