@@ -841,7 +841,7 @@ class WP_Object_Cache {
         $this->r = r\connect($rethink_servers[0]);
         $this->dbName = 'cache';
         $this->tableName = 'objectstore';
-/*
+
         try {
             // db doesn't exist, let's create it
             r\dbCreate($this->dbName)->run($this->r);
@@ -850,11 +850,11 @@ class WP_Object_Cache {
         }
 
         try {
-            $tables = r\db('cache')->tableCreate($this->tableName)->run($this->r);
+            $tables = r\db('cache')->tableCreate($this->tableName, array('durability' => 'soft'))->run($this->r);
         } catch (Exception $e) {
             // table already exists, continue on
         }
-*/
+
         $this->r->useDb('cache');
 
         /**
@@ -921,14 +921,14 @@ class WP_Object_Cache {
         if ( $byKey ) {
             $result = r\table($this->tableName)->insert(array(
                 'id' => $derived_key,
-                'value' => serialize($value),
+                'value' => $value,
                 'expires' => $expiration
             ))->run($this->r);
         }
         else {
             $result = r\table($this->tableName)->insert(array(
                 'id' => $derived_key,
-                'value' => serialize($value),
+                'value' => $value,
                 'expires' => $expiration
             ))->run($this->r);
         }
@@ -1033,15 +1033,13 @@ class WP_Object_Cache {
 
         // Append to Memcached value
         if ( $byKey )
-            $result = $this->m->appendByKey( $server_key, $derived_key, $value );
+            $result = r\table($this->tableName)->get($derived_key)->getField('value')->append($value)->run($this->r);
         else
-            $result = $this->m->append( $derived_key, $value );
+            $result = r\table($this->tableName)->get($derived_key)->getField('value')->append($value)->run($this->r);
 
         // Store in runtime cache if add was successful
-        if ( Memcached::RES_SUCCESS === $this->getResultCode() ) {
-            $combined = $this->combine_values( $this->cache[$derived_key], $value, 'app' );
-            $this->add_to_internal_cache( $derived_key, $combined );
-        }
+        $combined = $this->combine_values( $this->cache[$derived_key], $value, 'app' );
+        $this->add_to_internal_cache( $derived_key, $combined );
 
         return $result;
     }
@@ -1219,11 +1217,11 @@ class WP_Object_Cache {
         }
 
         if ( $byKey )
-            $result = $this->m->deleteByKey( $server_key, $derived_key, $time );
+            $result = r\table($this->tableName)->get($derived_key)->delete()->run($this->r);
         else
-            $result = $this->m->delete( $derived_key, $time );
+            $result = r\table($this->tableName)->get($derived_key)->delete()->run($this->r);
 
-        if ( Memcached::RES_SUCCESS === $this->getResultCode() )
+        if ( $result->deleted > 0 )
             unset( $this->cache[$derived_key] );
 
         return $result;
@@ -1344,7 +1342,7 @@ class WP_Object_Cache {
         }
 
         if ( $value != null ) {
-            $value = unserialize($value['value']);
+            $value = $value['value'];
             $this->add_to_internal_cache( $derived_key, $value );
             $found = true;
         }
@@ -1820,15 +1818,16 @@ class WP_Object_Cache {
 
         // Save to Memcached
         if ( $byKey ) {
+            var_dump($value);
             $result = r\table($this->tableName)->insert(array(
                 'id' => $derived_key,
-                'value' => serialize($value),
+                'value' => $value,
                 'expiration' => $expiration
             ), array('conflict' => 'replace'))->run($this->r);
         } else {
             $result = r\table($this->tableName)->insert(array(
                 'id' => $derived_key,
-                'value' => serialize($value),
+                'value' => $value,
                 'expiration' => $expiration
             ), array('conflict' => 'replace'))->run($this->r);
         }
