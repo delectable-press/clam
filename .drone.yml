@@ -96,7 +96,7 @@ build:
       - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:$$TAG
       - docker tag clamp/run-plugin:$$BUILD_NUMBER clamp/run-plugin:$$TAG
       - docker tag clamp/run-wordpress:$$BUILD_NUMBER clamp/run-wordpress:$$TAG
-      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/run-composer:$$TAG
+      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/srv-composer:$$TAG
       - docker tag clamp/lib-base:$$BUILD_NUMBER clamp/lib-base:latest
       - docker tag clamp/lib-consul-server:$$BUILD_NUMBER clamp/lib-consul-server:latest
       - docker tag clamp/lib-mysql:$$BUILD_NUMBER clamp/lib-mysql:latest
@@ -109,7 +109,7 @@ build:
       - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:latest
       - docker tag clamp/run-plugin:$$BUILD_NUMBER clamp/run-plugin:latest
       - docker tag clamp/run-wordpress:$$BUILD_NUMBER clamp/run-wordpress:latest
-      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/run-composer:latest
+      - docker tag clamp/srv-composer:$$BUILD_NUMBER clamp/srv-composer:latest
     when:
       event: tag
   push-release:
