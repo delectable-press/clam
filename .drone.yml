@@ -84,7 +84,6 @@ build:
       - docker tag clamp/lib-php-7:$$BUILD_NUMBER clamp/lib-php-7:$$TAG
       - docker tag clamp/lib-volume:$$BUILD_NUMBER clamp/lib-volume:$$TAG
       - docker tag clamp/run-haproxy:$$BUILD_NUMBER clamp/run-haproxy:$$TAG
-      - docker tag clamp/run-memcached:$$BUILD_NUMBER clamp/run-memcached:$$TAG
       - docker tag clamp/run-mysql:$$BUILD_NUMBER clamp/run-mysql:$$TAG
       - docker tag clamp/run-nginx:$$BUILD_NUMBER clamp/run-nginx:$$TAG
       - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:$$TAG
@@ -97,7 +96,6 @@ build:
       - docker tag clamp/lib-php-7:$$BUILD_NUMBER clamp/lib-php-7:latest
       - docker tag clamp/lib-volume:$$BUILD_NUMBER clamp/lib-volume:latest
       - docker tag clamp/run-haproxy:$$BUILD_NUMBER clamp/run-haproxy:latest
-      - docker tag clamp/run-memcached:$$BUILD_NUMBER clamp/run-memcached:latest
       - docker tag clamp/run-mysql:$$BUILD_NUMBER clamp/run-mysql:latest
       - docker tag clamp/run-nginx:$$BUILD_NUMBER clamp/run-nginx:latest
       - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:latest
@@ -118,7 +116,6 @@ build:
       - docker push clamp/lib-php-7:$$BUILD_NUMBER
       - docker push clamp/lib-volume:$$BUILD_NUMBER
       - docker push clamp/run-haproxy:$$BUILD_NUMBER
-      - docker push clamp/run-memcached:$$BUILD_NUMBER
       - docker push clamp/run-mysql:$$BUILD_NUMBER
       - docker push clamp/run-nginx:$$BUILD_NUMBER
       - docker push clamp/run-php-fpm:$$BUILD_NUMBER
@@ -131,7 +128,6 @@ build:
       - docker push clamp/lib-php-7:latest
       - docker push clamp/lib-volume:latest
       - docker push clamp/run-haproxy:latest
-      - docker push clamp/run-memcached:latest
       - docker push clamp/run-mysql:latest
       - docker push clamp/run-nginx:latest
       - docker push clamp/run-php-fpm:latest
@@ -144,7 +140,6 @@ build:
       - docker push clamp/lib-php-7:$$TAG
       - docker push clamp/lib-volume:$$TAG
       - docker push clamp/run-haproxy:$$TAG
-      - docker push clamp/run-memcached:$$TAG
       - docker push clamp/run-mysql:$$TAG
       - docker push clamp/run-nginx:$$TAG
       - docker push clamp/run-php-fpm:$$TAG
@@ -164,7 +159,6 @@ build:
       - docker tag clamp/lib-php-7:$$BUILD_NUMBER clamp/lib-php-7:$${BRANCH///-}
       - docker tag clamp/lib-volume:$$BUILD_NUMBER clamp/lib-volume:$${BRANCH///-}
       - docker tag clamp/run-haproxy:$$BUILD_NUMBER clamp/run-haproxy:$${BRANCH///-}
-      - docker tag clamp/run-memcached:$$BUILD_NUMBER clamp/run-memcached:$${BRANCH///-}
       - docker tag clamp/run-mysql:$$BUILD_NUMBER clamp/run-mysql:$${BRANCH///-}
       - docker tag clamp/run-nginx:$$BUILD_NUMBER clamp/run-nginx:$${BRANCH///-}
       - docker tag clamp/run-php-fpm:$$BUILD_NUMBER clamp/run-php-fpm:$${BRANCH///-}
@@ -185,7 +179,6 @@ build:
       - docker push clamp/lib-php-7:$$BUILD_NUMBER
       - docker push clamp/lib-volume:$$BUILD_NUMBER
       - docker push clamp/run-haproxy:$$BUILD_NUMBER
-      - docker push clamp/run-memcached:$$BUILD_NUMBER
       - docker push clamp/run-mysql:$$BUILD_NUMBER
       - docker push clamp/run-nginx:$$BUILD_NUMBER
       - docker push clamp/run-php-fpm:$$BUILD_NUMBER
@@ -198,7 +191,6 @@ build:
       - docker push clamp/lib-php-7:$${BRANCH///-}
       - docker push clamp/lib-volume:$${BRANCH///-}
       - docker push clamp/run-haproxy:$${BRANCH///-}
-      - docker push clamp/run-memcached:$${BRANCH///-}
       - docker push clamp/run-mysql:$${BRANCH///-}
       - docker push clamp/run-nginx:$${BRANCH///-}
       - docker push clamp/run-php-fpm:$${BRANCH///-}
