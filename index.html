@@ -1,30 +1,40 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title>Clam by delectable-press</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Clam</h1>
-      <h2 class="project-tagline">Truly dockerized WordPress</h2>
-      <a href="https://github.com/delectable-press/clam" class="btn">View on GitHub</a>
-      <a href="https://github.com/delectable-press/clam/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/delectable-press/clam/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
-    <section class="main-content">
-      <h1>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Clam by delectable-press</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Clam</h1>
+        <h2>Truly dockerized WordPress</h2>
+        <a href="https://github.com/delectable-press/clam" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
 <a id="a-truly-dockerized-wordpress" class="anchor" href="#a-truly-dockerized-wordpress" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A truly dockerized WordPress</h1>
 
-<p>A lot of dockerized WordPresses out there clash with the "docker way". This is an attempt to set the record straight and
-get a nicely done dockerized WordPress off the ground. There's still a long way to, but it will get there, one step at 
-a time. <em>This is nowhere near production ready</em></p>
+<p><a href="http://home.withinboredom.info:8090/delectable-press/clam"><img src="http://home.withinboredom.info:8090/api/badges/delectable-press/clam/status.svg" alt="Build Status"></a></p>
+
+<p>The goal is to make wordpress hyper-scalable for production use in Docker. There's still work to do; please feel free
+to contribute in any way by opening an issue or a PR.</p>
 
 <p><strong>I spend my day job on OSX and my night work on Windows, so this repo will remain OS agnostic.</strong> </p>
 
@@ -41,13 +51,14 @@ replicas would still be serving clients.</p>
 
 <p>Local development is done using <code>docker-compose</code> ...</p>
 
+<p>To get started, simply clone this repo and edit any variables (such as WP_HOME, WP_SITEURL), then run <code>docker-compose up</code>.</p>
+
+<p>It's designed to be run with docker swarm.</p>
+
 <h2>
 <a id="still-to-do" class="anchor" href="#still-to-do" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Still to do</h2>
 
 <ul>
-<li><del>memcached</del></li>
-<li>varnish</li>
-<li>uploads</li>
 <li>plugins and hooks</li>
 <li>automatic builds</li>
 <li>documentation</li>
@@ -74,17 +85,15 @@ replicas would still be serving clients.</p>
 <h2>
 <a id="running-it" class="anchor" href="#running-it" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running it</h2>
 
-<div class="highlight highlight-source-powershell"><pre>docker<span class="pl-k">-</span>machine create <span class="pl-k">--</span>driver virtualbox <span class="pl-k">--</span>virtualbox<span class="pl-k">-</span>memory<span class="pl-k">=</span><span class="pl-c1"><span class="pl-c1">2048</span></span> <span class="pl-k">--</span>virtualbox<span class="pl-k">-</span>cpu<span class="pl-k">-</span>count<span class="pl-k">=</span><span class="pl-c1"><span class="pl-c1">2</span></span> default
-<span class="pl-c1">docker-machine.exe</span> env <span class="pl-k">--</span>shell powershell default <span class="pl-k">|</span> <span class="pl-c1">Invoke-Expression</span>
+<div class="highlight highlight-source-powershell"><pre>.<span class="pl-k">/</span>stacks<span class="pl-k">/</span><span class="pl-c1">start-swarm.ps1</span>
 docker<span class="pl-k">-</span>compose up</pre></div>
 
 <h2>
 <a id="building-from-source" class="anchor" href="#building-from-source" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Building from source</h2>
 
-<div class="highlight highlight-source-powershell"><pre>docker<span class="pl-k">-</span>machine create <span class="pl-k">--</span>driver virtualbox <span class="pl-k">--</span>virtualbox<span class="pl-k">-</span>memory<span class="pl-k">=</span><span class="pl-c1"><span class="pl-c1">2048</span></span> <span class="pl-k">--</span>virtualbox<span class="pl-k">-</span>cpu<span class="pl-k">-</span>count<span class="pl-k">=</span><span class="pl-c1"><span class="pl-c1">2</span></span> default
-<span class="pl-c1">docker-machine.exe</span> env <span class="pl-k">--</span>shell powershell default <span class="pl-k">|</span> <span class="pl-c1">Invoke-Expression</span>
+<div class="highlight highlight-source-powershell"><pre>.<span class="pl-k">/</span>stacks<span class="pl-k">/</span><span class="pl-c1">start-swarm.ps1</span>
 docker build <span class="pl-k">-</span>t clamp<span class="pl-k">/</span>builder images
-docker run <span class="pl-k">-</span>v <span class="pl-k">/</span><span class="pl-k">var</span><span class="pl-k">/</span>run<span class="pl-k">/</span>docker.sock:<span class="pl-k">/</span><span class="pl-k">var</span><span class="pl-k">/</span>run<span class="pl-k">/</span>docker.sock <span class="pl-k">-</span>v <span class="pl-k">/</span>c<span class="pl-k">/</span>Users<span class="pl-k">/</span>withi<span class="pl-k">/</span>.docker<span class="pl-k">/</span>config.json:<span class="pl-k">/</span>root<span class="pl-k">/</span>.docker<span class="pl-k">/</span>config.json <span class="pl-k">--</span>rm clamp<span class="pl-k">/</span>builder <span class="pl-k">--</span>runs <span class="pl-k">--</span>plugins <span class="pl-k">-</span><span class="pl-k">-cle</span>anup
+docker run <span class="pl-k">-</span>v <span class="pl-k">/</span><span class="pl-k">var</span><span class="pl-k">/</span>run<span class="pl-k">/</span>docker.sock:<span class="pl-k">/</span><span class="pl-k">var</span><span class="pl-k">/</span>run<span class="pl-k">/</span>docker.sock <span class="pl-k">-</span>v <span class="pl-k">/</span>c<span class="pl-k">/</span>Users<span class="pl-k">/</span>YourUserName<span class="pl-k">/</span>.docker<span class="pl-k">/</span>config.json:<span class="pl-k">/</span>root<span class="pl-k">/</span>.docker<span class="pl-k">/</span>config.json <span class="pl-k">--</span>rm clamp<span class="pl-k">/</span>builder <span class="pl-k">--</span>bases <span class="pl-k">--</span>libs <span class="pl-k">--</span>runs <span class="pl-k">--</span>services <span class="pl-k">--</span>plugins <span class="pl-k">--</span>themes <span class="pl-k">-</span><span class="pl-k">-cle</span>anup <span class="pl-k">--</span>seq
 docker<span class="pl-k">-</span>compose up</pre></div>
 
 <h1>
@@ -115,13 +124,15 @@ docker<span class="pl-k">-</span>compose up</pre></div>
 <a id="building-from-source-1" class="anchor" href="#building-from-source-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Building from source</h2>
 
 <div class="highlight highlight-source-shell"><pre>docker build -t clamp/builder images
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v <span class="pl-k">~</span>/.docker/config.json:/root/.docker/config.json --rm clamp/builder  --cleanup
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v <span class="pl-k">~</span>/.docker/config.json:/root/.docker/config.json --rm clamp/builder --bases --libs --runs --services --plugins --themes --cleanup --seq
 docker-compose up</pre></div>
 
 <h1>
 <a id="available-builder-options" class="anchor" href="#available-builder-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Available builder options</h1>
 
 <ul>
+<li>
+<code>--bases</code>: Builds base images</li>
 <li>
 <code>--libs</code>: Builds all library containers</li>
 <li>
@@ -130,6 +141,8 @@ docker-compose up</pre></div>
 <code>--services</code>: Builds all infrastructure services, these are single run containers that usually are triggered by events</li>
 <li>
 <code>--plugins</code>: Builds a default set of plugins</li>
+<li>
+<code>--themes</code>: Builds a default set of themes</li>
 <li>
 <code>--cleanup</code>: Runs spotify/docker-gc and removes stale containers and images</li>
 <li>
@@ -143,14 +156,24 @@ docker-compose up</pre></div>
 
 <p>While this is available to be read for free, I retain all copywrite. It's like a book in the library, you can borrow it,
 but you can't steal it. Just kidding. It follows the WordPress license: GPLv2</p>
+        </section>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/delectable-press/clam">Clam</a> is maintained by <a href="https://github.com/delectable-press">delectable-press</a>.</span>
+        <aside id="sidebar">
+          <a href="https://github.com/delectable-press/clam/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/delectable-press/clam/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
+          <p class="repo-owner"><a href="https://github.com/delectable-press/clam"></a> is maintained by <a href="https://github.com/delectable-press">delectable-press</a>.</p>
 
-    </section>
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
 
   
   </body>
