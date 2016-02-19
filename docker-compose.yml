@@ -8,6 +8,7 @@ services:
     links:
       - db:db
       - memcached:memcached_cluster_1
+      - rethinkdb:rethinkdb
     environment:
       MEMCACHED_SERVERS: 1
       DB_NAME: "wordpress"
@@ -45,9 +46,14 @@ services:
       - wordpress:ro
       - uploads:rw
     links:
-      - php-proxy:php-fpm-lb
+      - php-fpm:php-fpm-lb
     ports:
       - "80:80"
+  rethinkdb:
+    image: rethinkdb:latest
+    ports:
+      - "8080:8080"
+      - "28015:28015"
   memcached:
     image: clamp/run-memcached:latest
   db-data:
