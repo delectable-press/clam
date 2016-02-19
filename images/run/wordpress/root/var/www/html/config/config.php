@@ -30,7 +30,9 @@ for($m = 1; $m <= getenv("MEMCACHED_SERVERS"); $m++) {
     array_push($memcached_servers, array("memcached_cluster_$m", 11211));
 }
 
-$rethink_servers = array('rethinkdb');
+define('RETHINK_HOST', getenv('RETHINK_HOST') ?: 'rethinkdb');
+define('RETHINK_DB', getenv('RETHINK_DB') ?: 'cache');
+define('RETHINK_TABLE', getenv('RETHINK_TABLE') ?: 'objectstore');
 /**
  * DB settings -- not used (todo: remove them)
  */

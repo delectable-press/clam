@@ -836,11 +836,11 @@ class WP_Object_Cache {
      * @param   null    $persistent_id      To create an instance that persists between requests, use persistent_id to specify a unique ID for the instance.
      */
     public function __construct( $persistent_id = null ) {
-        global $rethink_servers, $blog_id, $table_prefix;
+        global $blog_id, $table_prefix;
 
-        $this->r = r\connect($rethink_servers[0]);
-        $this->dbName = 'cache';
-        $this->tableName = 'objectstore';
+        $this->r = r\connect(RETHINK_HOST);
+        $this->dbName = RETHINK_DB;
+        $this->tableName = RETHINK_TABLE;
 
         $this->createBobbyTables();
 
