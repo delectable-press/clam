@@ -29,6 +29,8 @@ $memcached_servers = array();
 for($m = 1; $m <= getenv("MEMCACHED_SERVERS"); $m++) {
     array_push($memcached_servers, array("memcached_cluster_$m", 11211));
 }
+
+$rethink_servers = array('rethinkdb');
 /**
  * DB settings -- not used (todo: remove them)
  */
