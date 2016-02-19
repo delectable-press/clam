@@ -52,8 +52,9 @@ services:
   rethinkdb:
     image: rethinkdb:latest
     ports:
-      - "8080:8080"
-      - "28015:28015"
+      - "8080"
+      - "28015"
+    command: rethinkdb --bind all --join rethinkdb
   memcached:
     image: clamp/run-memcached:latest
   db-data:
