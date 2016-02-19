@@ -1,9 +1,7 @@
 FROM clamp/lib-base
 MAINTAINER Rob Landers <landers.robert@gmail.com>
 
-COPY . /build
-ENV VERSION 0.2.0
-LABEL version="0.2.0" description="Builds clamp"
+LABEL version="0.2.1" description="Builds clamp"
 
 RUN apt-get update \
     && apt-get install -y apt-transport-https \
@@ -13,6 +11,9 @@ RUN apt-get update \
     && apt-get purge lxc-docker \
     && apt-get install -y docker-engine subversion \
     && apt-get clean
+
+COPY . /build
+ENV VERSION 0.2.1
 
 RUN chmod +x /build/build.all
 
