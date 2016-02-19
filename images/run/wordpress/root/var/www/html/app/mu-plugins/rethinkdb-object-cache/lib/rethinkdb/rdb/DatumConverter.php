@@ -91,7 +91,10 @@ class DatumConverter
             // PHP prior to 5.5.0 doens't have DateTimeInterface, so we test for DateTime directly as well ^^^^^
             $iso8601 = $v->format(\DateTime::ISO8601);
             return new Iso8601($iso8601);
-        } else {
+        } elseif (is_object($v)) {
+            return new StringDatum(serialize($v));
+        }
+        else {
             throw new RqlDriverError("Unhandled type " . get_class($v));
         }
     }
@@ -109,7 +112,11 @@ class DatumConverter
             return NumberDatum::decodeServerResponse($json);
         }
         if (is_string($json)) {
-            return StringDatum::decodeServerResponse($json);
+            $string = StringDatum::decodeServerResponse($json);
+            if (is_serialized($string)) {
+                return ObjectDatum::decodeServerResponse(unserialize($string));
+            }
+            return $string;
         }
         if (is_array($json)) {
             return ArrayDatum::decodeServerResponse($json);
