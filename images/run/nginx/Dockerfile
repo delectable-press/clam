@@ -1,4 +1,4 @@
-FROM clamp/lib-base:latest
+FROM clamp/lib-base:$BUILD_NUMBER
 MAINTAINER Robert Landers <rlanders@boomtownroi.com>
 
 # Install nginx and have it forward logs to Docker
