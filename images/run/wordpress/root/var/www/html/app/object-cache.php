@@ -842,20 +842,7 @@ class WP_Object_Cache {
         $this->dbName = 'cache';
         $this->tableName = 'objectstore';
 
-        try {
-            // db doesn't exist, let's create it
-            r\dbCreate($this->dbName)->run($this->r);
-        } catch (Exception $e) {
-            // db already exists, continue on
-        }
-
-        try {
-            $tables = r\db('cache')->tableCreate($this->tableName, array('durability' => 'soft'))->run($this->r);
-        } catch (Exception $e) {
-            // table already exists, continue on
-        }
-
-        $this->r->useDb('cache');
+        $this->createBobbyTables();
 
         /**
          * This approach is borrowed from Sivel and Boren. Use the salt for easy cache invalidation and for
@@ -873,6 +860,23 @@ class WP_Object_Cache {
         // Setup cacheable values for handling expiration times
         $this->thirty_days = 60 * 60 * 24 * 30;
         $this->now         = time();
+    }
+
+    private function createBobbyTables() {
+        try {
+            // db doesn't exist, let's create it
+            r\dbCreate($this->dbName)->run($this->r);
+        } catch (Exception $e) {
+            // db already exists, continue on
+        }
+
+        try {
+            $tables = r\db($this->dbName)->tableCreate($this->tableName, array('durability' => 'soft'))->run($this->r);
+        } catch (Exception $e) {
+            // table already exists, continue on
+        }
+
+        $this->r->useDb($this->dbName);
     }
 
     /**
@@ -922,14 +926,16 @@ class WP_Object_Cache {
             $result = r\table($this->tableName)->insert(array(
                 'id' => $derived_key,
                 'value' => $value,
-                'expires' => $expiration
+                'expires' => $expiration,
+                'is_object' => is_object($value)
             ))->run($this->r);
         }
         else {
             $result = r\table($this->tableName)->insert(array(
                 'id' => $derived_key,
                 'value' => $value,
-                'expires' => $expiration
+                'expires' => $expiration,
+                'is_object' => is_object($value)
             ))->run($this->r);
         }
 
@@ -1278,13 +1284,16 @@ class WP_Object_Cache {
      * @return  bool                Returns TRUE on success or FALSE on failure.
      */
     public function flush( $delay = 0 ) {
-        $result = $this->m->flush( $delay );
+        try {
+            r\tableDrop($this->tableName)->run($this->r);
+            $this->createBobbyTables();
+        }
+        catch (Exception $e) {
+            // well, we tried...
+            return false;
+        }
 
-        // Only reset the runtime cache if memcached was properly flushed
-        if ( Memcached::RES_SUCCESS === $this->getResultCode() )
-            $this->cache = array();
-
-        return $result;
+        return true;
     }
 
     /**
@@ -1342,7 +1351,16 @@ class WP_Object_Cache {
         }
 
         if ( $value != null ) {
-            $value = $value['value'];
+            if ($value['is_object']) {
+                $value = $value['value'];
+                $value->setFlags(ArrayObject::ARRAY_AS_PROPS);
+            }
+            else {
+                $value = $value['value'];
+                if (is_object($value)) {
+                    $value = $value->getArrayCopy();
+                }
+            }
             $this->add_to_internal_cache( $derived_key, $value );
             $found = true;
         }
@@ -1818,17 +1836,18 @@ class WP_Object_Cache {
 
         // Save to Memcached
         if ( $byKey ) {
-            var_dump($value);
             $result = r\table($this->tableName)->insert(array(
                 'id' => $derived_key,
                 'value' => $value,
-                'expiration' => $expiration
+                'expiration' => $expiration,
+                'is_object' => is_object($value)
             ), array('conflict' => 'replace'))->run($this->r);
         } else {
             $result = r\table($this->tableName)->insert(array(
                 'id' => $derived_key,
                 'value' => $value,
-                'expiration' => $expiration
+                'expiration' => $expiration,
+                'is_object' => is_object($value)
             ), array('conflict' => 'replace'))->run($this->r);
         }
 

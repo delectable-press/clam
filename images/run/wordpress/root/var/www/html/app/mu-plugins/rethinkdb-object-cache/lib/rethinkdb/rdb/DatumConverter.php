@@ -113,9 +113,6 @@ class DatumConverter
         }
         if (is_string($json)) {
             $string = StringDatum::decodeServerResponse($json);
-            if (is_serialized($string)) {
-                return ObjectDatum::decodeServerResponse(unserialize($string));
-            }
             return $string;
         }
         if (is_array($json)) {
