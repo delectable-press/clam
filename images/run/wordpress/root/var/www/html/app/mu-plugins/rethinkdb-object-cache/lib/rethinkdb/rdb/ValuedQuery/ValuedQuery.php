@@ -109,22 +109,52 @@ abstract class ValuedQuery extends Query
     {
         return new Bracket($this, $attributeOrIndex);
     }
+
+    /**
+     * @param $delta
+     * @param null $opts
+     * @return Update
+     */
     public function update($delta, $opts = null)
     {
         return new Update($this, $delta, $opts);
     }
+
+    /**
+     * @param null $opts
+     * @return Delete
+     */
     public function delete($opts = null)
     {
         return new Delete($this, $opts);
     }
+
+    /**
+     * @param $delta
+     * @param null $opts
+     * @return Replace
+     */
     public function replace($delta, $opts = null)
     {
         return new Replace($this, $delta, $opts);
     }
+
+    /**
+     * @param $leftBound
+     * @param $rightBound
+     * @param null $opts
+     * @return Between
+     */
     public function between($leftBound, $rightBound, $opts = null)
     {
         return new Between($this, $leftBound, $rightBound, $opts);
     }
+
+    /**
+     * @param $predicate
+     * @param null $default
+     * @return Filter
+     */
     public function filter($predicate, $default = null)
     {
         return new Filter($this, $predicate, $default);
@@ -360,6 +390,11 @@ abstract class ValuedQuery extends Query
     {
         return new Lt($this, $other);
     }
+
+    /**
+     * @param $other
+     * @return Le
+     */
     public function le($other)
     {
         return new Le($this, $other);

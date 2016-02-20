@@ -24,14 +24,30 @@ use r\ProtocolBuffer\TermTermType;
 
 class Table extends ValuedQuery
 {
+    /**
+     * @param $document
+     * @param null $opts
+     * @return Insert
+     */
     public function insert($document, $opts = null)
     {
         return new Insert($this, $document, $opts);
     }
+
+    /**
+     * @param $key
+     * @return Get
+     */
     public function get($key)
     {
         return new Get($this, $key);
     }
+
+    /**
+     * @param $key
+     * @param null $opts
+     * @return GetAll
+     */
     public function getAll($key, $opts = null)
     {
         return new GetAll($this, $key, $opts);
