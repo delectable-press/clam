@@ -72,7 +72,7 @@ eval "$(docker-machine env --shell bash default)"
 
 FiSH:
 ``` fish
-docker-machine create --driver virtualbox --virtualbox-memory=20458 --virtualbox-cpu-count=2 default
+docker-machine create --driver virtualbox --virtualbox-memory=2048 --virtualbox-cpu-count=2 default
 eval (docker-machine env --shell fish default)
 ```
 
